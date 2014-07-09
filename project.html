@@ -1,0 +1,159 @@
+<html>
+<head>
+	<script src="http://d3js.org/d3.v3.js"></script>
+	<script src="http://d3js.org/topojson.v1.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
+</head>
+<style>
+	/* tell the SVG path to be a thin blue line without any area fill */
+	path {
+	stroke: steelblue;
+		stroke-width: 1;
+	fill: none;
+	}
+
+	.axis {
+		shape-rendering: crispEdges;
+	}
+
+	.x.axis line {
+	stroke: lightgrey;
+	}
+
+	.x.axis .minor {
+		stroke-opacity: .5;
+	}
+
+	.x.axis path {
+	display: none;
+	}
+
+	.y.axis line, .y.axis path {
+	fill: none;
+	stroke: #000;
+	}
+</style>
+<style>
+.countries {
+    fill: #555555;
+    stroke: #ffffff;
+    stroke-width: 1px;
+}
+</style>
+<body>
+<div id="map"></div>
+<div id="graph"></div>
+<script type="text/javascript">
+
+var width = 960;
+var height = 500;
+
+var svg = d3.select('#map').append('svg')
+    .attr('width', width)
+    .attr('height', height);
+
+var projection = d3.geo.mercator();
+
+var path = d3.geo.path()
+    .projection(projection)
+
+d3.json('ne_10m_admin_0_countries_lakes/countries.topo.json', function(error, countries) {
+    svg.selectAll('.countries')
+        .data(topojson.feature(countries, countries.objects.countries).features)
+	.enter()
+	.append('path')
+        .attr('class', 'countries')
+	.attr('id', function (d) {return d.id;})
+        .attr('d', path)
+	.on('click', function (d) {queryCountry(d.properties.NAME, plotCountryGraph);});
+});
+
+function queryCountry(countryID, callback) {
+	var migrationData;
+	$.ajax({
+		type: "GET",
+		url: "php/data-fetch.php", 
+		data: {"origin": countryID},
+		dataType: "json",
+		success: function (data) {
+			callback(data);
+		}
+	});
+}
+
+function plotCountryGraph(migrationData) {
+	var aggregateByYear = new Array();
+	for (var i in migrationData) {
+		row = migrationData[i];
+		if (aggregateByYear[row.year] == undefined) {
+			aggregateByYear[row.year] = parseInt(row.applied_during_year);
+		} else {
+			aggregateByYear[row.year] += parseInt(row.applied_during_year);
+		}
+	}
+	d3.select('#line_graph').remove();
+	drawLineChart(aggregateByYear);
+}
+
+	
+function drawLineChart(data) {	
+	// define dimensions of graph
+	var m = [80, 80, 80, 80]; // margins
+	var w = 1000 - m[1] - m[3]; // width
+	var h = 400 - m[0] - m[2]; // height
+
+	// X scale will fit all values from data[] within pixels 0-w
+	var x = d3.scale.linear().domain([2000, 2013]).range([0, w]);
+	// Y scale will fit values from 0-10 within pixels h-0 (Note the inverted domain for the y-scale: bigger is up!)
+	var y = d3.scale.linear().domain([0,d3.max(d3.values(data))]).range([h, 0]);
+		// automatically determining max range can work something like this
+		// var y = d3.scale.linear().domain([0, d3.max(data)]).range([h, 0]);
+
+	// create a line function that can convert data[] into x and y points
+	var line = d3.svg.line()
+		// assign the X function to plot our line as we wish
+		.x(function(d) { 
+			// verbose logging to show what's actually being done
+			console.log('Plotting X value for data point: ' + d + ' using index: ' + d.key + ' to be at: ' + x(d.key) + ' using our xScale.');
+			// return the X coordinate where we want to plot this datapoint
+			return x(d.key); 
+		})
+		.y(function(d) { 
+			// verbose logging to show what's actually being done
+			console.log('Plotting Y value for data point: ' + d.value + ' to be at: ' + y(d.value) + " using our yScale.");
+			// return the Y coordinate where we want to plot this datapoint
+			return y(d.value); 
+		})
+
+		// Add an SVG element with the desired dimensions and margin.
+		var graph = d3.select("#graph").append("svg:svg")
+		      .attr("width", w + m[1] + m[3])
+		      .attr("height", h + m[0] + m[2])
+		      .attr("id", "line_graph")
+		    .append("svg:g")
+		      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+
+		// create yAxis
+		var xAxis = d3.svg.axis().scale(x).tickSize(-h).tickSubdivide(true);
+		// Add the x-axis.
+		graph.append("svg:g")
+		      .attr("class", "x axis")
+		      .attr("transform", "translate(0," + h + ")")
+		      .call(xAxis);
+
+
+		// create left yAxis
+		var yAxisLeft = d3.svg.axis().scale(y).ticks(4).orient("left");
+		// Add the y-axis to the left
+		graph.append("svg:g")
+		      .attr("class", "y axis")
+		      .attr("transform", "translate(-25,0)")
+		      .call(yAxisLeft);
+		
+		// Add the line by appending an svg:path element with the data line we created above
+		// do this AFTER the axes above so that the line is above the tick-lines
+		graph.append("svg:path").attr("d", line(d3.entries(data)));
+}
+</script>
+</body>
+</html>

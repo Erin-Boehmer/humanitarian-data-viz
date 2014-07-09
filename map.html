@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+<style>
+.countries {
+  fill: #b0d0ab;
+  stroke: #6cb0e0;
+  stroke-width: 0.5px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+}
+</style>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/queue.v1.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+
+<script>
+var width = 938;
+var height = 620;
+
+var projection = d3.geo
+                   .mercator()
+                   .scale(150)
+                   .translate([width / 2, height / 2]);
+
+var path = d3.geo
+             .path()
+             .pointRadius(2)
+             .projection(projection);
+  
+var svg = d3.select("#map")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+function loaded(error, countries) {
+  svg.append("g")
+     .attr("class", "countries")
+     .selectAll("path")
+     .data(topojson.feature(countries, countries.objects.countries).features)
+     .enter()
+     .append("path")
+     .attr("d", path);
+}
+
+queue().defer(d3.json, "countries.topo.json")
+       .await(loaded);
+</script>
+</body>
+</html>
