@@ -1,0 +1,43 @@
+/* style.css */
+
+/* tell the SVG path to be a thin yellow line without any area fill */
+path {
+        stroke: #FFCC00;
+        stroke-width: 1;
+        fill: none;
+}
+
+#map {
+        background: #FFF;
+}
+
+.axis {
+        shape-rendering: crispEdges;
+}
+
+.x.axis line {
+        stroke: lightgrey;
+}
+
+.x.axis .minor {
+        stroke-opacity: .5;
+}
+
+.x.axis path {
+        display: none;
+}
+
+.y.axis line, .y.axis path {
+        fill: none;
+        stroke: #000;
+}
+
+.countries.hover {
+	fill: #523179;
+}
+
+.countries {
+	fill: #B5A8C4;
+	stroke: #210245;
+	stroke-width: 1px;
+}
