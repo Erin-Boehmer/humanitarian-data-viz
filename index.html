@@ -1,54 +1,18 @@
 <html>
 <head>
+
+<!-- Javascript Files -->
 	<script src="http://d3js.org/d3.v3.js"></script>
 	<script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
 	<script src="http://d3js.org/topojson.v1.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
+
+
+<!-- CSS Files -->
+	<link rel="stylesheet" type="text/css" href="./css/style.css">
+
 </head>
-<style>
-	/* tell the SVG path to be a thin blue line without any area fill */
-	path {
-	stroke: steelblue;
-		stroke-width: 1;
-	fill: none;
-	}
-	
-	#map {
-		background: aqua
-	}
 
-	.axis {
-		shape-rendering: crispEdges;
-	}
-
-	.x.axis line {
-	stroke: lightgrey;
-	}
-
-	.x.axis .minor {
-		stroke-opacity: .5;
-	}
-
-	.x.axis path {
-	display: none;
-	}
-
-	.y.axis line, .y.axis path {
-	fill: none;
-	stroke: #000;
-	}
-</style>
-<style>
-.countries.hover {
-	fill: #000000;
-}
-
-.countries {
-	fill: #ffffff;
-	stroke: #000000;
-	stroke-width: 1px;
-}
-</style>
 
 <body>
 	<div id="complete_body">
