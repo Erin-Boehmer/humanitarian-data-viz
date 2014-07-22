@@ -7,8 +7,35 @@ path {
         fill: none;
 }
 
-#map {
-        background: #FFF;
+#selectors {
+	border: 1px solid red; 
+	float: top; 
+	height: 15%;
+}
+
+#map_and_indicators {
+	height: 65%;
+	float: top;
+}
+
+#map_and_indicators #map {
+	height: 100%; 
+	width: 79%; 
+	float:left; 
+	border: 1px solid red;
+        background: #000;
+}
+
+#map_and_indicators #story_board {
+	height: 100%; 
+	width: 20%; 
+	float:right; 
+	border: 1px solid red;
+}
+
+#graph {
+	height: 20%; 
+	border: 1px solid red
 }
 
 .axis {
@@ -38,6 +65,6 @@ path {
 
 .countries {
 	fill: #B5A8C4;
-	stroke: #210245;
+	stroke: #000;
 	stroke-width: 1px;
 }
