@@ -3,7 +3,6 @@
 /* tell the SVG path to be a thin yellow line without any area fill */
 path {
         stroke: #FFCC00;
-        stroke-width: 1;
         fill: none;
 }
 

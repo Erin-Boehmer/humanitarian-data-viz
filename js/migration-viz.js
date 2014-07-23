@@ -80,18 +80,36 @@ plotLines(data.properties.NAME, migration_data);
 * Result: Plots arcs from source country to every target country.
 */
 function plotLines(sourceCountry, migrationData) {
-var aggregateByTargetCountry = reduce(migrationData, 'residence', 'applied_during_year');
-console.log(aggregateByTargetCountry);	
-// Get the location of the source country.
-var source = projection.invert(path.centroid(nameToFeatureMap[sourceCountry]));
-console.log(nameToFeatureMap);
-for (var targetCountry in aggregateByTargetCountry) {
-var target = projection.invert(path.centroid(nameToFeatureMap[targetCountry]));
-link = {'source': source, 'target': target};
-dValue = path(arc(link));
-console.log(dValue);
-svg.append("path").attr("d", dValue).attr('stroke-width', 4);
-}
+	svg.selectAll('.arcs').remove();	
+	var aggregateByTargetCountry = reduce(migrationData, 'residence', 'applied_during_year');
+	console.log(aggregateByTargetCountry);	
+	// Get the location of the source country.
+	var source = projection.invert(path.centroid(nameToFeatureMap[sourceCountry]));
+	console.log(nameToFeatureMap);
+	
+	max = Math.log(d3.max(d3.values(aggregateByTargetCountry)));
+	for (var targetCountry in aggregateByTargetCountry) {
+		var target = projection.invert(path.centroid(nameToFeatureMap[targetCountry]));
+		link = {'source': source, 'target': target};
+		dValue = path(arc(link));
+
+		strokeValue = Math.log(aggregateByTargetCountry[targetCountry]+1)/max;
+		strokeValue = 0.5 + 10*strokeValue;
+		
+		var countryID = 'unknown';
+		if (nameToFeatureMap[targetCountry] != undefined) {
+			countryID = nameToFeatureMap[targetCountry].id;
+		}
+		svg.append("path")
+			.datum(countryID)
+			.attr("d", dValue)
+			.attr('stroke-width', strokeValue)
+			.attr('class', 'arcs')
+			.attr("marker-end", "url(#arrowHead)")
+			.on("mouseover", function(countryID) {d3.select('#' + countryID).classed('hover', true)})
+			.on("mouseout", function (countryID) {d3.select('#' + countryID).classed('hover', false)})
+			.append('svg:title').text('Country: ' + targetCountry + ", Applicants:"+aggregateByTargetCountry[targetCountry]);
+	}
 }
 
 /**
