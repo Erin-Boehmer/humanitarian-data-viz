@@ -1,15 +1,18 @@
 <?php
 function fetchData($operation) {
-
+	error_reporting( error_reporting() & ~E_NOTICE );
 	$username = "unochaviz"; 
 	$password = "4fU8xNjMDcEK";   
 	$host = "unocha.ck9lcpfkyytw.us-east-1.rds.amazonaws.com";
 	$database="unocha";
 
 	$connection = pg_connect("host=$host port=5432 dbname=$database user=$username password=$password") or die('Cannot connect to host:');
+	
+	if(isset($_GET['residence'])) {
+		$residence = $_GET['residence'];
+	}
 
 	$origin = $_GET['origin'];
-	$residence = $_GET['residence'];
 	switch ($operation) {
 		case 'asylum':
 			$query = fetchAsylumData($origin, $residence);
