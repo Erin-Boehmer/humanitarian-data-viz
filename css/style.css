@@ -1,7 +1,29 @@
 /* style.css */
 
+.country:hover{
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+.text{
+  font-size:10px;
+  text-transform:capitalize;
+}
+.hidden { 
+  display: none; 
+}
+div.tooltip {
+  color: #222; 
+  background: #fff; 
+  padding: .5em; 
+  text-shadow: #f5f5f5 0 1px 0;
+  border-radius: 2px; 
+  box-shadow: 0px 0px 2px 0px #a6a6a6; 
+  opacity: 0.9; 
+  position: absolute;
+}
+
 /* tell the SVG path to be a thin yellow line without any area fill */
-path {
+.flow {
         stroke: #FFCC00;
         fill: none;
 }
@@ -17,12 +39,13 @@ path {
 	float: top;
 }
 
-#map_and_indicators #map {
+#map_and_indicators #container {
 	height: 100%; 
 	width: 79%; 
 	float:left; 
 	border: 1px solid red;
-        background: #000;
+        background: #FFF;
+  	overflow:hidden;
 }
 
 #map_and_indicators #story_board {
@@ -36,7 +59,7 @@ path {
 	height: 20%; 
 	border: 1px solid red
 }
-
+/*
 .axis {
         shape-rendering: crispEdges;
 }
@@ -67,3 +90,13 @@ path {
 	stroke: #000;
 	stroke-width: 1px;
 }
+
+#container {
+  margin:10px 10%;
+  border:2px solid #000;
+  border-radius: 5px;
+  height:100%;
+  overflow:hidden;
+  background: #F0F8FF;
+}
+*/
