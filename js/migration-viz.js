@@ -15,7 +15,7 @@ var nameToFeatureMap = Array();
 
 var tooltip = d3.select("#container").append("div").attr("class", "tooltip hidden");
 var flow_tooltip = d3.select("#container").append("div").attr("class", "tooltip hidden");
-
+console.log('-----------------------------')
 setup(width,height);
 
 // Create the arc creator function
