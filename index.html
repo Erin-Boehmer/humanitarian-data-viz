@@ -1,12 +1,12 @@
-<ahtml>
+<html>
 <head>
 
 <!-- Javascript Files -->
-	<script src="http://d3js.org/d3.v3.js"></script>
 	<script src="http://d3js.org/d3.geo.projection.v0.min.js"></script>
-	<script src="http://d3js.org/topojson.v1.min.js"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.js"></script>
-	<script type="text/javascript" src="js/migration-viz.js"></script>
+	<script src="js/migration-viz.js"></script>
+	<script src="js/d3.min.js"></script>
+	<script src="js/topojson.v1.min.js"></script>
 
 <!-- CSS Files -->
 	<link rel="stylesheet" type="text/css" href="css/style.css">
@@ -15,10 +15,9 @@
 
 
 <body onload="init()">
-	
 	<div id="selectors"></div>
 	<div id="map_and_indicators">
-		<div id="map"></div>
+		<div id="container"></div>
 		<div id="story_board"></div>
 	</div>
 	<div id="graph"></div>
