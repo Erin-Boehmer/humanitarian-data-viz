@@ -1,0 +1,242 @@
+id	name	geonameId
+0	Aruba	3577279
+1	Afghanistan	1149361
+2	Angola	3351879
+3	Anguilla	3573511
+4	Albania	783754
+5	Åland Islands	661882
+6	Andorra	3041565
+7	United Arab Emirates	290557
+8	Argentina	3865483
+9	Armenia	174982
+10	American Samoa	5880801
+11	Antarctica	4036650
+12	Australia	2077456
+13	French Southern Territories	1546748
+14	Antigua and Barbuda	3576396
+15	Australia	2077456
+16	Austria	2782113
+17	Azerbaijan	587116
+18	Burundi	433561
+19	Belgium	2802361
+20	Benin	2395170
+21	Burkina Faso	2361809
+22	Bangladesh	1210997
+23	Bulgaria	732800
+24	Bahrain	290291
+25	Bahamas	3572887
+26	Bosnia and Herzegovina	3277605
+27	Saint Barthélemy	3578476
+28	Belarus	630336
+29	Belize	3582678
+30	Bermuda	3573345
+31	Bolivia, Plurinational State of	3923057
+32	Brazil	3469034
+33	Barbados	3374084
+34	Brunei Darussalam	1820814
+35	Bhutan	1252634
+36	Botswana	933860
+37	Central African Republic	239880
+38	Canada	6251999
+39	Switzerland	2658434
+40	Chile	3895114
+41	China	1814991
+42	Côte d'Ivoire	2287781
+43	Cameroon	2233387
+44	Congo, the Democratic Republic of the	203312
+45	Congo	2260494
+46	Cook Islands	1899402
+47	Colombia	3686110
+48	Comoros	921929
+49	Cape Verde	3374766
+50	Costa Rica	3624060
+51	Cuba	3562981
+52	Curaçao	7626836
+53	Cayman Islands	3580718
+54	Northern Cyprus	6879062
+55	Cyprus	146669
+56	Czech Republic	3077311
+57	Germany	2921044
+58	Djibouti	223817
+59	Dominica	3575830
+60	Denmark	2623032
+61	Dominican Republic	3508796
+62	Algeria	2589581
+63	Ecuador	3658394
+64	Egypt	357994
+65	Eritrea	338010
+66	Spain	2510769
+67	Estonia	453733
+68	Ethiopia	337996
+69	Finland	660013
+70	Fiji	2205218
+71	Falkland Islands (Malvinas)	3474414
+72	France	3017382
+73	Franch Guyana	3381670
+74	Faroe Islands	2622320
+75	Micronesia, Federated States of	2081918
+76	Gabon	2400553
+77	United Kingdom	2635167
+78	Georgia	614540
+79	Guernsey	3042362
+80	Ghana	2300660
+81	Guinea	2420477
+82	Gambia	2413451
+83	Guinea-Bissau	2372248
+84	Equatorial Guinea	2309096
+85	Greece	390903
+86	Grenada	3580239
+87	Greenland	3425505
+88	Guatemala	3595528
+89	Guam	4043988
+90	Guyana	3378535
+91	Hong Kong	1819729
+92	Heard Island and McDonald Islands	1547314
+93	Honduras	3608932
+94	Croatia	3202326
+95	Haiti	3723988
+96	Hungary	719819
+97	Indonesia	1643084
+98	Isle of Man	3042225
+99	India	1269750
+100	Cocos Islands	7304591
+101	Christmas Island	2078138
+102	British Indian Ocean Territory	1282588
+103	Ireland	2963597
+104	Iran, Islamic Republic of	130758
+105	Iraq	99237
+106	Iceland	2629691
+107	Israel	294640
+108	Italy	3175395
+109	Jamaica	3489940
+110	Jersey	3042142
+111	Jordan	248816
+112	Japan	1861060
+114	Kazakhstan	1522867
+115	Kenya	192950
+116	Kyrgyzstan	1527747
+117	Cambodia	1831722
+118	Kiribati	4030945
+119	Saint Kitts and Nevis	3575174
+120	Korea, Republic of	1835841
+121	Kosovo	831053
+122	Kuwait	285570
+123	Lao People's Democratic Republic	1655842
+124	Lebanon	272103
+125	Liberia	2275384
+126	Libya	2215636
+127	Saint Lucia	3576468
+128	Liechtenstein	3042058
+129	Sri Lanka	1227603
+130	Lesotho	932692
+131	Lithuania	597427
+132	Luxembourg	2960316
+133	Latvia	458258
+134	Macao	1821274
+135	Saint Martin (French part)	3578421
+136	Morocco	2542007
+137	Monaco	2993457
+138	Moldova, Republic of	617790
+139	Madagascar	1062947
+140	Maldives	1282028
+141	Mexico	3996063
+142	Marshall Islands	2080185
+143	Macedonia, the former Yugoslav Republic of	718075
+144	Mali	2453866
+145	Malta	2562770
+146	Myanmar	1327865
+147	Montenegro	3194884
+148	Mongolia	2029969
+149	Northern Mariana Islands	4041468
+150	Mozambique	1036973
+151	Mauritania	2378080
+152	Montserrat	3578097
+153	Mauritius	934292
+154	Malawi	927384
+155	Malaysia	1733045
+156	Namibia	3355338
+157	New Caledonia	2139685
+158	Niger	2440476
+159	Norfolk Island	2155115
+160	Nigeria	2328926
+161	Nicaragua	3617476
+162	Niue	4036232
+163	Netherlands	2750405
+164	Norway	3144096
+165	Nepal	1282988
+166	Nauru	2110425
+167	New Zealand	2186224
+168	Oman	286963
+169	Pakistan	1168579
+170	Panama	3703430
+171	Pitcairn	4030699
+172	Peru	3932488
+173	Philippines	1694008
+174	Palau	1559582
+175	Papua New Guinea	2088628
+176	Poland	798544
+177	Puerto Rico	4566966
+178	Korea, Democratic People's Republic of	1873107
+179	Portugal	2264397
+180	Paraguay	3437598
+181	Palestine, State of	4717232
+182	French Polynesia	4030656
+183	Qatar	289688
+184	Romania	798549
+185	Russian Federation	2017370
+186	Rwanda	49518
+187	Western Sahara	2461445
+188	Saudi Arabia	102358
+189	Sudan	366755
+190	South Sudan	7909807
+191	Senegal	2245662
+192	Singapore	1880251
+193	South Georgia and the South Sandwich Islands	3474415
+194	Saint Helena, Ascension and Tristan da Cunha	3370751
+195	Solomon Islands	2103350
+196	Sierra Leone	2403846
+197	El Salvador	3585968
+198	San Marino	3168068
+199	Somaliland	223816
+200	Somalia	51537
+201	Saint Pierre and Miquelon	3424932
+202	Serbia	6290252
+203	Sao Tome and Principe	2410758
+204	Suriname	3382998
+205	Slovakia	3057568
+206	Slovenia	3190538
+207	Sweden	2661886
+208	Swaziland	934841
+209	Sint Maarten (Dutch part)	7609695
+210	Seychelles	241170
+211	Syrian Arab Republic	163843
+212	Turks and Caicos Islands	3576916
+213	Chad	2434508
+214	Togo	2363686
+215	Thailand	1605651
+216	Tajikistan	1220409
+217	Turkmenistan	1218197
+218	Timor-Leste	1966436
+219	Tonga	4032283
+220	Trinidad and Tobago	3573591
+221	Tunisia	2464461
+222	Turkey	298795
+223	Taiwan, Province of China	1668284
+224	Tanzania, United Republic of	149590
+225	Uganda	226074
+226	Ukraine	690791
+227	Uruguay	3439705
+228	United States	6252001
+229	Uzbekistan	1512440
+230	Saint Vincent and the Grenadines	3577815
+231	Venezuela, Bolivarian Republic of	3625428
+232	Virgin Islands, British	3577718
+233	Virgin Islands, U.S.	4796775
+234	Viet Nam	1562822
+235	Vanuatu	2134431
+236	Wallis and Futuna	4034749
+237	Samoa	4034894
+238	Yemen	69543
+239	South Africa	953987
+240	Zambia	895949
+241	Zimbabwe	878675
