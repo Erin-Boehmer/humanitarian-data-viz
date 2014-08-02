@@ -26,6 +26,7 @@ div.tooltip {
 .flow {
         stroke: #FFCC00;
         fill: none;
+        stroke-opacity: .25;
 }
 
 #selectors {

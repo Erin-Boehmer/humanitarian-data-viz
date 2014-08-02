@@ -24,7 +24,7 @@ var arc = d3.geo.greatArc().precision(1);
 function setup(width,height){
   projection = d3.geo.mercator()
     .translate([(width/2), (height/2)])
-    .scale( width / 2 / Math.PI);
+    .scale( width / 3 / Math.PI);
 
   path = d3.geo.path().projection(projection);
 
@@ -150,7 +150,7 @@ function click() {
 function plotFlows(data) {
   // Remove existing flow arcs
   d3.selectAll(".flow").remove();
-
+  console.log(data)
   // Fetch the data and call plotLines() on callback
   $.ajax({
 	type: "GET",
@@ -174,6 +174,7 @@ function plotLines(sourceCountry, migrationData) {
 	var aggregateByTargetCountry = reduce(migrationData, 'residence', 'applied_during_year');
   
   	// Get the location of the source country.
+  	console.log(nameToFeatureMap[sourceCountry])
   	var source = projection.invert(path.centroid(nameToFeatureMap[sourceCountry]));
 	var max = Math.log(d3.max(d3.values(aggregateByTargetCountry)));
 	for (var targetCountry in aggregateByTargetCountry) {
@@ -188,21 +189,27 @@ function plotLines(sourceCountry, migrationData) {
 	  	//offsets for tooltips
   		var offsetL = document.getElementById('container').offsetLeft+20;
   		var offsetT = document.getElementById('container').offsetTop+10;
-				
+			
+
+		var mouseOverPath = function(d,i) {
+			console.log(d)
+			console.log(i)
+			var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
+			flow_tooltip.classed("hidden", false)
+        			.attr("style", "left:"+(mouse[0]+offsetL)+"px;top:"+(mouse[1]+offsetT)+"px")
+        			.html('Country: ' + d + ", Applicants: " + aggregateByTargetCountry[d]);
+		}
+    	var mouseExitPath = function(d,i) {
+			flow_tooltip.classed("hidden", true);
+		}
+    					
 		g.append("path")
 			.datum(targetCountry)
 			.attr("class","flow")
 			.attr("d", dValue)
   			.style('stroke-width', strokeValue)
-    			.on("mouseover", function(d,i) {
-        			var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
-        			flow_tooltip.classed("hidden", false)
-                			.attr("style", "left:"+(mouse[0]+offsetL)+"px;top:"+(mouse[1]+offsetT)+"px")
-                			.html('Country: ' + d + ", Applicants: " + aggregateByTargetCountry[d]);
-    			})
-    			.on("mouseout",  function(d,i) {
-        			flow_tooltip.classed("hidden", true);
-    			})
+			.on("mouseover", mouseOverPath)
+			.on("mouseout",  mouseExitPath)
 
 
 	}
