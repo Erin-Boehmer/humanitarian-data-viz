@@ -15,6 +15,7 @@ var nameToFeatureMap = Array();
 
 var tooltip = d3.select("#container").append("div").attr("class", "tooltip hidden");
 var flow_tooltip = d3.select("#container").append("div").attr("class", "tooltip hidden");
+
 console.log('-----------------------------')
 setup(width,height);
 
@@ -143,25 +144,24 @@ function throttle() {
 //geo translation on mouse click in map
 function click() {
   var latlon = projection.invert(d3.mouse(this));
-  console.log(latlon);
 }
 
 //function to plot migration flows on country click
 function plotFlows(data) {
   // Remove existing flow arcs
   d3.selectAll(".flow").remove();
-
+  var operationType = angular.element($("#control-panel")).scope().radioModel.toLowerCase();
   // Fetch the data and call plotLines() on callback
   $.ajax({
 	type: "GET",
 	 url: "php/data-fetch.php",
 	 data: {
-  		"operation": 'asylum',
+  		"operation": operationType,
 		"origin": data.properties.name
 	},
 	dataType: "json",
-	success: function (migration_data) {
-		plotLines(data.properties.name, migration_data);
+	success: function (movingData) {
+		plotLines(data.properties.name, operationType, movingData);
 	}
   });
 }
@@ -170,9 +170,15 @@ function plotFlows(data) {
 * Input: SourceCountry name, Database rows for corresponding target country data
 * Result: Plots arcs from source country to every target country.
 */
-function plotLines(sourceCountry, migrationData) {
-	var aggregateByTargetCountry = reduce(migrationData, 'residence', 'applied_during_year');
-  
+function plotLines(sourceCountry, operationType, movingData) {
+	if(operationType == "asylum") {
+		var aggregateByTargetCountry = reduce(movingData, 'residence', 'applied_during_year');
+	}
+	else if (operationType == "migration") {
+		var aggregateByTargetCountry = reduce(movingData,'country', 'value');
+	} else {
+		console.log("Neither migration nor asylum flows selected");
+	}
   	// Get the location of the source country.
   	var source = projection.invert(path.centroid(nameToFeatureMap[sourceCountry]));
 	var max = Math.log(d3.max(d3.values(aggregateByTargetCountry)));
@@ -293,7 +299,6 @@ function onSelectCountry(data) {
 	// Remove current selection, and mark clicked country as selected.
 	d3.select('.selected').classed('selected', false);
 	d3.select('#'+data.id).classed('selected', true);
-
 	// Fetch the data, and run two different callbacks. One callback should
 	// color the countries, and the second should render the aggregate graph.
 	$.ajax({
