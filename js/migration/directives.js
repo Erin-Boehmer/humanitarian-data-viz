@@ -12,7 +12,7 @@ angular.module('myApp.directives', []).
   .directive('draggable', function($document) {
 	return function(scope, element, attr) {
 		//initial x and y values correspond to initial position of control-panel
-      		var startX = 0, startY = 0, x = 230, y = 60;
+		var startX = 0, startY = 0, x = element.css('left').slice(0,-2), y = element.css('top').slice(0,-2);
 		element.on('mousedown', function(event) {
         		// Prevent default dragging of selected content
         		event.preventDefault();
