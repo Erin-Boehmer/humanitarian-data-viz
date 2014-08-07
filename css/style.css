@@ -1,4 +1,16 @@
 /* style.css */
+#container {
+	z-index:0;
+}
+
+#container #control-panel {
+	position: absolute;
+	cursor: pointer;
+	z-index:1001;
+	top:60px;
+	left: 230px;
+	background-color:rgba(0,0,0,0.4);
+}
 
 .country:hover{
   stroke: #fff;
@@ -28,76 +40,3 @@ div.tooltip {
         fill: none;
         stroke-opacity: .25;
 }
-
-#selectors {
-	border: 1px solid red; 
-	float: top; 
-	height: 15%;
-}
-
-#map_and_indicators {
-	height: 65%;
-	float: top;
-}
-
-#map_and_indicators #container {
-	height: 100%; 
-	width: 79%; 
-	float:left; 
-	border: 1px solid red;
-        background: #FFF;
-  	overflow:hidden;
-}
-
-#map_and_indicators #story_board {
-	height: 100%; 
-	width: 20%; 
-	float:right; 
-	border: 1px solid red;
-}
-
-#graph {
-	height: 20%; 
-	border: 1px solid red
-}
-/*
-.axis {
-        shape-rendering: crispEdges;
-}
-
-.x.axis line {
-        stroke: lightgrey;
-}
-
-.x.axis .minor {
-        stroke-opacity: .5;
-}
-
-.x.axis path {
-        display: none;
-}
-
-.y.axis line, .y.axis path {
-        fill: none;
-        stroke: #000;
-}
-
-.countries.hover {
-	fill: #523179;
-}
-
-.countries {
-	fill: #B5A8C4;
-	stroke: #000;
-	stroke-width: 1px;
-}
-
-#container {
-  margin:10px 10%;
-  border:2px solid #000;
-  border-radius: 5px;
-  height:100%;
-  overflow:hidden;
-  background: #F0F8FF;
-}
-*/

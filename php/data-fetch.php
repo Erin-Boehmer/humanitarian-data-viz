@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors',1);
+ini_set('display_startup_errors',1);
+error_reporting(-1);
+
 function fetchData($operation) {
 	error_reporting( error_reporting() & ~E_NOTICE );
 	$username = "unochaviz"; 
@@ -8,17 +12,13 @@ function fetchData($operation) {
 
 	$connection = pg_connect("host=$host port=5432 dbname=$database user=$username password=$password") or die('Cannot connect to host:');
 	
-	if(isset($_GET['residence'])) {
-		$residence = $_GET['residence'];
-	}
-
 	$origin = $_GET['origin'];
 	switch ($operation) {
 		case 'asylum':
-			$query = fetchAsylumData($origin, $residence);
+			$query = fetchAsylumData($origin);
 			break;	
 		case 'migration': 
-			$query = fetchMigrationData($origin, $residence);
+			$query = fetchMigrationData($origin);
 			break;
 		case 'indicator':
 			$query = fetchIndicatorData($origin);
@@ -47,20 +47,8 @@ function fetchData($operation) {
 /**
  * Returns query for fetching asylum data for specified origin and residence country.
  */
-function fetchAsylumData($origin, $residence) {
-	$query = 'SELECT * FROM asylum_flows WHERE ';
-	$clauses = array();
-
-	if ($residence) {
-		$clauses[] = "residence = '$residence'";
-	}
-
-	if ($origin) {
-		$clauses[] = "origin = '$origin'";
-	}
-	if ($clauses) {
-		$query .= implode(' AND ',$clauses);
-	}
+function fetchAsylumData($origin) {
+	$query = "SELECT year, residence, origin, applied_during_year FROM asylum_flows WHERE origin = '" . $origin . "';";
 	
 	return $query;
 }
@@ -68,21 +56,8 @@ function fetchAsylumData($origin, $residence) {
 /**
  * Returns query for fetching migration data for specified origin and residence country.
  */
-function fetchMigrationData($origin, $residence) {
-	$query = 'SELECT * FROM asylum_flows WHERE';
-	$clauses = array();
-
-	if ($residence) {
-		$clauses[] = "country = '$residence'";
-	}
-
-	if ($origin) {
-		$clauses[] = "country_of_origin = '$origin'";
-	}
-	if ($clauses) {
-		$query .= implode(' AND ',$clauses);
-	}
-	
+function fetchMigrationData($origin) {
+	$query = "SELECT country, country_of_origin, year, value FROM migration_flows WHERE country_of_origin = '" . $origin . "';";
 	return $query;
 }
 
