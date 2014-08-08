@@ -161,9 +161,7 @@ function init() {
     function plotFlows(data, countryCode) {
         console.log(data)
         //Lighten all other countries
-        g.selectAll(".country").style("fill", function(d, i) {
-                return shade(d.properties.color, 0.75);
-            });
+        g.selectAll(".country").style("fill", '#ddd');
         //Darken the current country
         $(this).css('fill', shade(data.properties.color, -0.5))
 
@@ -219,9 +217,8 @@ function init() {
 
             var mouseOverPath = function(d, i, j) {
                 //Darken the current country
-                var featureMap = nameToFeatureMap[d]; 
-                var ele = $("#"+featureMap.id);
-                ele.css('fill', shade(featureMap.properties.color, -0.5))
+                var ele = $("#"+nameToFeatureMap[d].id);
+                ele.css('fill', shade(nameToFeatureMap[d].properties.color, -0.5))
 
                 $(this).addClass("flow-hightlight")
                 $(this).attr("class", "flow-hightlight")
@@ -234,9 +231,8 @@ function init() {
                     .html('Country: ' + d + ", Applicants: " + aggregateByTargetCountry[d]);
             }
             var mouseExitPath = function(d, i) {
-                var featureMap = nameToFeatureMap[d]; 
-                var ele = $("#"+featureMap.id);
-                ele.css('fill', shade(featureMap.properties.color, 0.5))              
+                var ele = $("#"+nameToFeatureMap[d].id);
+                ele.css('fill', shade(nameToFeatureMap[d].properties.color, 0.5))              
                 flow_tooltip.classed("hidden", true);
                 $(this).attr("class", "flow")
             }
@@ -248,6 +244,10 @@ function init() {
                 .style('stroke-width', strokeValue)
                 .on("mouseover", mouseOverPath)
                 .on("mouseout", mouseExitPath)
+            if(typeof nameToFeatureMap[targetCountry] != 'undefined'){
+                var ele = $("#"+nameToFeatureMap[targetCountry].id);
+                ele.css('fill', shade(nameToFeatureMap[targetCountry].properties.color, 0.5)) 
+            }                 
         }
     }
 
