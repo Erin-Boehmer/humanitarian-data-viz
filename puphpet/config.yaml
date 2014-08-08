@@ -10,7 +10,7 @@ vagrantfile-local:
             forwarded_port:
                 DZeHlEQNi3RI:
                     host: '8888'
-                    guest: '80'
+                    guest: '8888'
         provider:
             virtualbox:
                 modifyvm:

@@ -16,8 +16,9 @@ var nameToFeatureMap = Array();
 var tooltip = d3.select("#container").append("div").attr("class", "tooltip hidden");
 var flow_tooltip = d3.select("#container").append("div").attr("class", "tooltip hidden");
 
-console.log('-----------------------------')
+// console.log('-----------------------------')
 setup(width,height);
+setupData();
 
 // Create the arc creator function
 var arc = d3.geo.greatArc().precision(1);
@@ -40,21 +41,35 @@ function setup(width,height){
 
 }
 
-d3.json("data/world-topo-min.json", function(error, world) {
 
-  var countries = topojson.feature(world, world.objects.countries).features;
-  topo = countries;
-  draw(topo);
-	
-  // Populate nameToFeatureMap for plotting arcs convenience
-  for (var i in countries) {
-	feature = countries[i];
-	nameToFeatureMap[feature.properties.name] = feature;
-  }
+function setupData(){
 
-});
+	var setupCentroids = function(){
+		d3.csv("data/country_centroids_all.csv", function(error, latlong) {
+			_.each(latlong, function(val){
+				var country = nameToFeatureMap[val.COUNTRY]
+				if (country){
+					country.centroid = [val.LONG, val.LAT]
+			    }
+		     });
+		  });		
+	}
+
+	d3.json("data/world-topo-min.json", function(error, world) {
+	  var countries = topojson.feature(world, world.objects.countries).features;
+	  topo = countries;
+	  draw(topo);
+		
+	  // Populate nameToFeatureMap for plotting arcs convenience
+	  for (var i in countries) {
+		feature = countries[i];
+		nameToFeatureMap[feature.properties.name] = feature;
+	  }
+	  setupCentroids();
+	});
 
 
+}
 
 function draw(topo) {
 
@@ -67,10 +82,7 @@ function draw(topo) {
       .style("fill", function(d, i) { return d.properties.color; });
 
 
-  d3.csv("data/countries-lat-long.csv", function(error, latlong) {
-	// NEED TO DO THIS STILL - FIND COUNTRY LAT LONG RATHER THAN CENTROID
 
-  });
   
   //offsets for tooltips
   var offsetL = document.getElementById('container').offsetLeft+20;
@@ -90,7 +102,7 @@ function draw(topo) {
     .on("click", plotFlows); 
 
 
-}
+} 
 
 
 function redraw() {
@@ -170,6 +182,17 @@ function plotFlows(data) {
 * Input: SourceCountry name, Database rows for corresponding target country data
 * Result: Plots arcs from source country to every target country.
 */
+
+function getCentroid(country){
+	if (typeof nameToFeatureMap[country] === 'undefined' ||
+			typeof nameToFeatureMap[country].centroid === 'undefined'){
+  		return projection.invert(path.centroid(nameToFeatureMap[country]));
+  	}
+	else{
+		return nameToFeatureMap[country].centroid;
+	}
+}
+
 function plotLines(sourceCountry, operationType, movingData) {
 	if(operationType == "asylum") {
 		var aggregateByTargetCountry = reduce(movingData, 'residence', 'applied_during_year');
@@ -179,13 +202,13 @@ function plotLines(sourceCountry, operationType, movingData) {
 	} else {
 		console.log("Neither migration nor asylum flows selected");
 	}
-  	// Get the location of the source country.
-  	console.log(nameToFeatureMap[sourceCountry])
-  	var source = projection.invert(path.centroid(nameToFeatureMap[sourceCountry]));
+  	var source = getCentroid(sourceCountry);
 	var max = Math.log(d3.max(d3.values(aggregateByTargetCountry)));
 	for (var targetCountry in aggregateByTargetCountry) {
-		//d3.selectAll("[title="+targetCountry+"]").style("fill","#000");
-		var target = projection.invert(path.centroid(nameToFeatureMap[targetCountry]));
+
+
+		var target = getCentroid(targetCountry);
+		// var target = projection.invert(projection(nameToFeatureMap[targetCountry].centroid));
 		link = {'source': source, 'target': target};
 		dValue = path(arc(link));
 
@@ -198,8 +221,12 @@ function plotLines(sourceCountry, operationType, movingData) {
 			
 
 		var mouseOverPath = function(d,i) {
-			console.log(d)
-			console.log(i)
+			// console.log(d)
+			// console.log(i)
+			// console.log(this)
+			$(this).addClass("flow-hightlight")
+			$(this).attr("class","flow-hightlight")
+
 			var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
 			flow_tooltip.classed("hidden", false)
         			.attr("style", "left:"+(mouse[0]+offsetL)+"px;top:"+(mouse[1]+offsetT)+"px")
@@ -207,6 +234,7 @@ function plotLines(sourceCountry, operationType, movingData) {
 		}
     	var mouseExitPath = function(d,i) {
 			flow_tooltip.classed("hidden", true);
+			$(this).attr("class","flow")
 		}
     					
 		g.append("path")
