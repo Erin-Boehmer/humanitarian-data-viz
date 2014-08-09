@@ -13,15 +13,22 @@ function fetchData($operation) {
 	$connection = pg_connect("host=$host port=5432 dbname=$database user=$username password=$password") or die('Cannot connect to host:');
 	
 	$origin = $_GET['origin'];
+	$indicator = $_GET['indicator'];
 	switch ($operation) {
-		case 'asylum':
-			$query = fetchAsylumData($origin);
+		case 'asylum_from':
+			$query = fetchAsylumFromData($origin);
 			break;	
-		case 'migration': 
-			$query = fetchMigrationData($origin);
+		case 'asylum_to':
+			$query = fetchAsylumToData($origin);
+			break;	
+		case 'migration_from': 
+			$query = fetchMigrationFromData($origin);
+			break;
+		case 'migration_to': 
+			$query = fetchMigrationToData($origin);
 			break;
 		case 'indicator':
-			$query = fetchIndicatorData($origin);
+			$query = fetchIndicatorData($indicator);
 			break;
 		default:
 			exit();
@@ -32,7 +39,7 @@ function fetchData($operation) {
 	if (!$result) {
 		echo "Problem with query " . $query . "<br/>";
 		echo pg_last_error(); 
-		exit(); 
+		exit();
 	}
 	$data = array();
 	while($myrow = pg_fetch_assoc($result)) {
@@ -47,24 +54,39 @@ function fetchData($operation) {
 /**
  * Returns query for fetching asylum data for specified origin and residence country.
  */
-function fetchAsylumData($origin) {
+function fetchAsylumFromData($origin) {
 	$query = "SELECT year, residence, origin, applied_during_year FROM asylum_flows WHERE origin = '" . $origin . "';";
-	
+	return $query;
+}
+
+/**
+ * Returns query for fetching asylum data for specified origin and residence country.
+ */
+function fetchAsylumToData($origin) {
+	$query = "SELECT year, residence, origin, applied_during_year FROM asylum_flows WHERE residence = '" . $origin . "';";
 	return $query;
 }
 
 /**
  * Returns query for fetching migration data for specified origin and residence country.
  */
-function fetchMigrationData($origin) {
+function fetchMigrationFromData($origin) {
 	$query = "SELECT country, country_of_origin, year, value FROM migration_flows WHERE country_of_origin = '" . $origin . "';";
+	return $query;
+}
+
+/**
+ * Returns query for fetching migration data for specified origin and residence country.
+ */
+function fetchMigrationToData($origin) {
+	$query = "SELECT country, country_of_origin, year, value FROM migration_flows WHERE country = '" . $origin . "';";
 	return $query;
 }
 
 /**
  * Returns query for fetching indicator data for country.
  */
-function fetchIndicatorData($country) {
+function fetchIndicatorData($indicator) {
 
 }
 

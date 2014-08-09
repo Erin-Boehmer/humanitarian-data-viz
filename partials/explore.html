@@ -1,9 +1,13 @@
 <div id="container">
 	<div id="control-panel" draggable>
 		<div class="btn-group">
-        		<label class="btn btn-primary" ng-model="radioModel" btn-radio="'Migration'">Migration</label>
-        		<label class="btn btn-primary" ng-model="radioModel" btn-radio="'Asylum'">Asylum</label>
+        		<label class="btn btn-primary" ng-model="radioModel" btn-radio="'Migration_from'">Migration by Source</label>
+        		<label class="btn btn-primary" ng-model="radioModel" btn-radio="'Migration_to'">Migration by Target</label>
     		</div>
+		<div class="btn-group">
+        		<label class="btn btn-primary" ng-model="radioModel" btn-radio="'Asylum_from'">Asylum by Source</label>
+        		<label class="btn btn-primary" ng-model="radioModel" btn-radio="'Asylum_to'">Asylum by Target</label>
+		</div>
 	</div>
 </div>
 

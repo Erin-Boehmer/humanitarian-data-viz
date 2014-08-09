@@ -168,7 +168,8 @@ function init() {
         // Remove existing flow arcs
         d3.selectAll(".flow").remove();
         var operationType = angular.element($("#control-panel")).scope().radioModel.toLowerCase();
-        // Fetch the data and call plotLines() on callback
+        
+	// Fetch the data and call plotLines() on callback
         $.ajax({
             type: "GET",
             url: "php/data-fetch.php",
@@ -189,11 +190,15 @@ function init() {
      * Result: Plots arcs from source country to every target country.
      */
     function plotLines(sourceCountry, operationType, movingData) {
-        if (operationType == "asylum") {
+        if (operationType == "asylum_from") {
             var aggregateByTargetCountry = reduce(movingData, 'residence', 'applied_during_year');
-        } else if (operationType == "migration") {
+        } else if (operationType == "asylum_to") {
+            var aggregateByTargetCountry = reduce(movingData, 'origin', 'applied_during_year');
+	} else if (operationType == "migration_from") {
             var aggregateByTargetCountry = reduce(movingData, 'country', 'value');
-        } else {
+        } else if (operationType == "migration_to") {
+            var aggregateByTargetCountry = reduce(movingData, 'country_of_origin', 'value');
+	} else {
             console.log("Neither migration nor asylum flows selected");
         }
         var source = getCentroid(sourceCountry);
