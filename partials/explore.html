@@ -1,10 +1,29 @@
 <div id="container">
-	<div id="control-panel" draggable>
-		<div class="btn-group-vertical">
-        		<button type="button"  class="btn btn-primary operation" ng-model="operation" btn-radio="'Migration_from'"  ng-change='newValue(oepration)'>Migration by Source</button>
-        		<button type="button"  class="btn btn-success operation" ng-model="operation" btn-radio="'Migration_to'" ng-change='newValue(oepration)'>Migration by Target</button>
-        		<button type="button"  class="btn btn-info operation" ng-model="operation" btn-radio="'Asylum_from'" ng-change='newValue(oepration)'>Asylum by Source</button>
-        		<button type="button"  class="btn btn-warning operation" ng-model="operation" btn-radio="'Asylum_to'" ng-change='newValue(oepration)'>Asylum by Target</button>
+	<div id="control-panel" class="panel panel-default" draggable>
+		<div class="panel-body">
+		<h5>Migrants</h5>
+		<div class="btn-group">
+        		<button type="button"  class="btn btn-primary operation" ng-model="operation" btn-radio="'Migration_from'"  ng-change='newValue(oepration)'>Leaving</button>
+        		<button type="button"  class="btn btn-success operation" ng-model="operation" btn-radio="'Migration_to'" ng-change='newValue(oepration)'>Arriving</button>
+		</div>
+
+		<h5>Asylum Seekers</h5>
+		<div class="btn-group">
+        		<button type="button"  class="btn btn-info operation" ng-model="operation" btn-radio="'Asylum_from'" ng-change='newValue(oepration)'>Leaving</button>
+        		<button type="button"  class="btn btn-warning operation" ng-model="operation" btn-radio="'Asylum_to'" ng-change='newValue(oepration)'>Arriving</button>
+		</div>
+
+		<!-- <button class="btn btn-default btn-xs" ng-click="enable()">Enable ui-select</button> -->
+  		<!-- <button class="btn btn-default btn-xs" ng-click="disable()">Disable ui-select</button> -->
+	  	<!-- <button class="btn btn-default btn-xs" ng-click="clear()">Clear ng-model</button> -->
+
+		<h5>Indicators</h5>
+	  	<ui-select ng-model="indicator.selected" theme="selectize" ng-disabled="disabled">
+	 		<ui-select-match placeholder="Select an indicator...">{{$select.selected.column_name}}</ui-select-match>
+ 			<ui-select-choices repeat="indicator in indicators | filter: $select.search">
+      				<span ng-bind-html="indicator.column_name | highlight: $select.search"></span>
+    			</ui-select-choices>
+ 		 </ui-select>
 		</div>
 	</div>
 </div>

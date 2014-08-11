@@ -27,6 +27,9 @@ function fetchData($operation) {
 		case 'migration_to': 
 			$query = fetchMigrationToData($origin);
 			break;
+		case 'indicator_types':
+			$query = "select column_name from information_schema.columns where table_name = 'indicators_new';";
+			break;
 		case 'indicator':
 			$query = fetchIndicatorData($indicator);
 			break;

@@ -3,6 +3,8 @@
 
 // Declare app level module which depends on filters, and services
 angular.module('myApp', [
+  'ngSanitize',
+  'ui.select',
   'ngRoute',
   'myApp.filters',
   'myApp.services',
@@ -21,3 +23,4 @@ config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/nikhil', {templateUrl: 'partials/nikhil.html', controller: 'CommonController'});
   $routeProvider.otherwise({redirectTo: '/introduction'});
 }]);
+console.log("app.js");
