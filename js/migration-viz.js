@@ -149,26 +149,41 @@ function init() {
 
     //geo translation on mouse click in map
     function click() {
-        // console.log('cccclllllllllllllll')
         // var latlon = projection.invert(d3.mouse(this));
     }
 
 /////////////////////////////////////////////////////////////////////////
 //////////////////////      User Actions            /////////////////////
 /////////////////////////////////////////////////////////////////////////
+    
+    var selectedCountryData = null;
+
+    //On selecting an operation
+    window.onSelectOperation = function(operation){
+      if (selectedCountryData!=null)
+          plotFlows(selectedCountryData, null,null, operation)        
+    }
+
 
     //function to plot migration flows on country click
-    function plotFlows(data, countryCode) {
-        console.log(data)
+    function plotFlows(data, countryCode, arg3, operationType) {
+        selectedCountryData = data;
         //Lighten all other countries
         g.selectAll(".country").style("fill", '#ddd');
         //Darken the current country
         $(this).css('fill', shade(data.properties.color, -0.5))
 
         // Remove existing flow arcs
-        d3.selectAll(".flow").remove();
-        var operationType = angular.element($("#control-panel")).scope().radioModel.toLowerCase();
-        
+        d3.selectAll(".flow_migration_to").remove();
+        d3.selectAll(".flow_migration_from").remove();
+        d3.selectAll(".flow_asylum_to").remove();
+        d3.selectAll(".flow_asylum_from").remove();
+        if (typeof operationType === 'undefined')
+            operationType = angular.element($("#control-panel")).scope().operation.toLowerCase();
+        console.log(operationType)
+         $('#vizLoading').modal('show')
+
+
 	// Fetch the data and call plotLines() on callback
         $.ajax({
             type: "GET",
@@ -179,7 +194,15 @@ function init() {
             },
             dataType: "json",
             success: function(movingData) {
+                console.log(movingData.length + ' # of rows')
+                if (movingData.length == 0){
+                    var modal = $('#noDataModal').modal('show')
+                    modal.css('margin-top', ($(window).height() - modal.height()) / 2 - parseInt(modal.css('padding-top')))
+
+                }
                 plotLines(data.properties.name, operationType, movingData);
+                $('#vizLoading').modal('hide')
+
             }
         });
     }
@@ -225,8 +248,8 @@ function init() {
                 var ele = $("#"+nameToFeatureMap[d].id);
                 ele.css('fill', shade(nameToFeatureMap[d].properties.color, -0.5))
 
-                $(this).addClass("flow-hightlight")
-                $(this).attr("class", "flow-hightlight")
+                // $(this).addClass("flow-hightlight_"+operationType)
+                $(this).attr("class", "flow-hightlight_"+operationType)
 
                 var mouse = d3.mouse(svg.node()).map(function(d) {
                     return parseInt(d);
@@ -239,12 +262,12 @@ function init() {
                 var ele = $("#"+nameToFeatureMap[d].id);
                 ele.css('fill', shade(nameToFeatureMap[d].properties.color, 0.5))              
                 flow_tooltip.classed("hidden", true);
-                $(this).attr("class", "flow")
+                $(this).attr("class", "flow_"+operationType)
             }
 
             g.append("path")
                 .datum(targetCountry)
-                .attr("class", "flow")
+                .attr("class", "flow_"+operationType)
                 .attr("d", dValue)
                 .style('stroke-width', strokeValue)
                 .on("mouseover", mouseOverPath)
@@ -429,3 +452,18 @@ function blend(color1, color2, percent){
     }
 
 }
+
+
+var myApp;
+myApp = myApp || (function () {
+    var pleaseWaitDiv = $('<div class="modal hide" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false"><div class="modal-header"><h1>Processing...</h1></div><div class="modal-body"><div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div></div></div>');
+    return {
+        showPleaseWait: function() {
+            pleaseWaitDiv.modal();
+        },
+        hidePleaseWait: function () {
+            pleaseWaitDiv.modal('hide');
+        },
+
+    };
+})();

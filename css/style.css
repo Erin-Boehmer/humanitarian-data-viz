@@ -36,14 +36,54 @@ div.tooltip {
 
 /* tell the SVG path to be a thin yellow line without any area fill */
 .flow {
-        stroke: #FFCC00;
         fill: none;
-        stroke-opacity: .25;
+        stroke-opacity: .20;
+        stroke: #FFCC00;
 }
 .flow-hightlight {
-        stroke: #CC00FF;
         fill: none;
-        stroke-opacity: .75;
+        stroke-opacity: .85;
+        stroke: #CC00FF;
+}
+.flow_migration_from {
+        fill: none;
+        stroke-opacity: .20;
+        stroke: #3c8dbc;
+}
+.flow-hightlight_migration_from {
+        fill: none;
+        stroke-opacity: .85;
+        stroke: #367fa9;
+}
+.flow_migration_to {
+        fill: none;
+        stroke-opacity: .20;
+        stroke: #00a65a;
+}
+.flow-hightlight_migration_to {
+        fill: none;
+        stroke-opacity: .85;
+        stroke: #008d4c;
+}
+.flow_asylum_from {
+        fill: none;
+        stroke-opacity: .20;
+        stroke: #00c0ef;
+}
+.flow-hightlight_asylum_from {
+        fill: none;
+        stroke-opacity: .85;
+        stroke: #00acd6;
+}
+.flow_asylum_to {
+        fill: none;
+        stroke-opacity: .20;
+        stroke: #f39c12;
+}
+.flow-hightlight_asylum_to {
+        fill: none;
+        stroke-opacity: .85;
+        stroke: #e08e0b;
 }
 
 
@@ -77,6 +117,19 @@ div.tooltip {
 #graph {
 	height: 20%; 
 	border: 1px solid red
+}
+#viz_dialog {
+    width: 100px;
+    height: 50px;
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    margin-top: -225px;
+    margin-left: -200px;
+    padding: 20px;
+}
+.progress-bar.animate {
+   width: 100%;
 }
 /*
 .axis {
