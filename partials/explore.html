@@ -26,6 +26,21 @@
  		 </ui-select>
 		</div>
 	</div>
+
+  <!--------------------------------------------------------->
+  <!--------------------- Data Panel ------------------------>
+  <div id="data-panel" class="panel panel-default" ng-show="countries">
+    <div class="panel-body">
+    <input ng-model="searchText" placeholder="Filter">
+    <table id="searchTextResults">
+      <tr><th>Country</th><th>Applicants</th></tr>
+      <tr ng-repeat="country in countries | filter:searchText">
+        <td>{{country.name}}</td>
+        <td>{{country.count}}</td>
+      </tr>
+    </table>
+    </div>
+  </div>
 </div>
 
 <!-- Modal -->

@@ -226,6 +226,8 @@ function init() {
         }
         var source = getCentroid(sourceCountry);
         var max = Math.log(d3.max(d3.values(aggregateByTargetCountry)));
+        var scope = angular.element($("#data-panel")).scope();
+        scope.$apply(function(){scope.countries.length=0;})
         for (var targetCountry in aggregateByTargetCountry) {
 
             var target = getCentroid(targetCountry);
@@ -237,6 +239,9 @@ function init() {
             dValue = path(arc(link));
 
             var strokeValue = Math.log(aggregateByTargetCountry[targetCountry] + 1) / max;
+            // scope.$apply(function(){scope.countries.push({name:targetCountry, count:aggregateByTargetCountry[targetCountry]});})
+            scope.$apply(function(){scope.addCountry({name:targetCountry, count:aggregateByTargetCountry[targetCountry]});})
+
             strokeValue = 0.5 + 10 * strokeValue;
 
             //offsets for tooltips

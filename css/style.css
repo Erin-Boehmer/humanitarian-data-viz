@@ -12,6 +12,18 @@
 	width: 220px;
 	background-color:rgba(255,255,255,0.5);
 }
+#container #data-panel {
+  position: absolute;
+  cursor: pointer;
+  z-index:100;
+  top:300px;
+  left: 230px;
+  width: 220px;
+  height: 220px;
+  background-color:rgba(255,255,255,0.5);
+  overflow:auto;
+
+}
 
 .country:hover{
   stroke: #fff;
