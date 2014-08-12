@@ -6,7 +6,7 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
     .controller('ExploreController', ['$scope',
         function($scope, $http) {
 
-            init();
+            var migration = viz.init();
 
             $scope.countries = []
 
@@ -18,6 +18,18 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
             $scope.addCountry = function(country){
             	$scope.countries.push(country);
             	$scope.countries = _.sortBy($scope.countries, function(country) {return -1*country.count})
+            }
+            $scope.resetCountries = function () {
+            	$scope.countries= []
+            }
+            $scope.setCountryList = function(countryList){
+            	$scope.countryList = _.sortBy($scope.countries, function(country) {return country.name})
+            	$scope.countries = countryList
+            	// $scope.countries = _.sortBy($scope.countries, function(country) {return -1*country.count})
+            }
+            $scope.selectCountry = function(country){
+            	console.log('llllllllllllllllllllllllllllllllllllll'+country)
+            	migration.selectCountry(country)
             }
 
             $scope.indicator = {};

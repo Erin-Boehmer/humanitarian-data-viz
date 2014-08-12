@@ -1,4 +1,4 @@
-function init() {
+viz = { init :function() {
 
 /////////////////////////////////////////////////////////////////////////
 //////////////////////      INIT and SETUP         //////////////////////
@@ -56,12 +56,16 @@ function init() {
             var countries = topojson.feature(world, world.objects.countries).features;
             topo = countries;
             draw(topo);
-
+    
             // Populate nameToFeatureMap for plotting arcs convenience
+            var countryList = []
             for (var i in countries) {
                 feature = countries[i];
                 nameToFeatureMap[feature.properties.name] = feature;
+                countryList.push({name:feature.properties.name})
             }
+            var scope = angular.element($("#data-panel")).scope();
+            scope.$apply(function(){scope.setCountryList(countryList);})
             setupCentroids();
         });
     }
@@ -163,7 +167,11 @@ function init() {
       if (selectedCountryData!=null)
           plotFlows(selectedCountryData, null,null, operation)        
     }
-
+    this.selectCountry = function(country){
+        console.log('xxxxxxxxxxxxxxxxxxxxxxxxx')
+        console.log(nameToFeatureMap[country])
+        plotFlows(nameToFeatureMap[country])
+    }
 
     //function to plot migration flows on country click
     function plotFlows(data, countryCode, arg3, operationType) {
@@ -227,7 +235,7 @@ function init() {
         var source = getCentroid(sourceCountry);
         var max = Math.log(d3.max(d3.values(aggregateByTargetCountry)));
         var scope = angular.element($("#data-panel")).scope();
-        scope.$apply(function(){scope.countries.length=0;})
+        scope.$apply(function(){scope.resetCountries();})
         for (var targetCountry in aggregateByTargetCountry) {
 
             var target = getCentroid(targetCountry);
@@ -455,20 +463,7 @@ function blend(color1, color2, percent){
         }
 
     }
+    return this;
 
-}
+}}
 
-
-var myApp;
-myApp = myApp || (function () {
-    var pleaseWaitDiv = $('<div class="modal hide" id="pleaseWaitDialog" data-backdrop="static" data-keyboard="false"><div class="modal-header"><h1>Processing...</h1></div><div class="modal-body"><div class="progress progress-striped active"><div class="bar" style="width: 100%;"></div></div></div></div>');
-    return {
-        showPleaseWait: function() {
-            pleaseWaitDiv.modal();
-        },
-        hidePleaseWait: function () {
-            pleaseWaitDiv.modal('hide');
-        },
-
-    };
-})();
