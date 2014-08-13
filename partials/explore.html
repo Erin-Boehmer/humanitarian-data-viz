@@ -1,4 +1,5 @@
 <div id="container">
+	<center><div id="title" ng-show="country.selected"><h2>{{action}}{{country.name}}</h2></div></center>
 	<div id="control-panel" class="panel panel-default" draggable>
 		<div class="panel-body">
 		<h5>Migrants</h5>
@@ -13,23 +14,24 @@
         		<button type="button"  class="btn btn-warning operation" ng-model="operation" btn-radio="'Asylum_to'" ng-change='newValue(oepration)'>Arriving</button>
 		</div>
 
-		<!-- <button class="btn btn-default btn-xs" ng-click="enable()">Enable ui-select</button> -->
-  		<!-- <button class="btn btn-default btn-xs" ng-click="disable()">Disable ui-select</button> -->
-	  	<!-- <button class="btn btn-default btn-xs" ng-click="clear()">Clear ng-model</button> -->
-
 		<h5>Indicators</h5>
-	  	<ui-select ng-model="indicator.selected" theme="selectize" ng-disabled="disabled">
-	 		<ui-select-match placeholder="Select an indicator...">{{$select.selected.column_name}}</ui-select-match>
+	  	<ui-select ng-model="indicator.selected" theme="selectize">
+	 		<ui-select-match placeholder="Select an indicator...">{{$select.selected.display}}</ui-select-match>
  			<ui-select-choices repeat="indicator in indicators | filter: $select.search">
-      				<span ng-bind-html="indicator.column_name | highlight: $select.search"></span>
+      				<span ng-bind-html="indicator.display | highlight: $select.search"></span>
     			</ui-select-choices>
- 		 </ui-select>
+ 		</ui-select>
+			
+		<div id="indicator-key" ng-show="indicator.selected">
+			<div style="float: right; color: white; margin-right: 5px; line-height: 25px;">Higher</div>
+			<div style="float: left; margin-left: 5px; line-height: 25px;;">Lower</div>
+			<div id="gradient"></div>
+		</div>
 		</div>
 	</div>
 
-  <!--------------------------------------------------------->
-  <!--------------------- Data Panel ------------------------>
-  <div id="data-panel" class="panel panel-default">
+    <!--  Data Panel -->
+  <div id="data-panel" class="panel panel-default" draggable>
     <div class="panel-body">
     <input ng-model="searchText" placeholder="Filter">
     <div class="data-panel-table">

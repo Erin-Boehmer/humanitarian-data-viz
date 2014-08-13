@@ -13,6 +13,7 @@ function fetchData($operation) {
 	$connection = pg_connect("host=$host port=5432 dbname=$database user=$username password=$password") or die('Cannot connect to host:');
 	
 	$origin = $_GET['origin'];
+	$year = $_GET['year'];
 	$indicator = $_GET['indicator'];
 	switch ($operation) {
 		case 'asylum_from':
@@ -27,11 +28,8 @@ function fetchData($operation) {
 		case 'migration_to': 
 			$query = fetchMigrationToData($origin);
 			break;
-		case 'indicator_types':
-			$query = "select column_name from information_schema.columns where table_name = 'indicators_new';";
-			break;
 		case 'indicator':
-			$query = fetchIndicatorData($indicator);
+			$query = fetchIndicatorData($indicator, $year);
 			break;
 		default:
 			exit();
@@ -89,8 +87,9 @@ function fetchMigrationToData($origin) {
 /**
  * Returns query for fetching indicator data for country.
  */
-function fetchIndicatorData($indicator) {
-
+function fetchIndicatorData($indicator, $year) {
+	$query = "SELECT country, " . $indicator . " FROM indicators_new WHERE year = '" . $year . "';";
+	return $query;
 }
 
 

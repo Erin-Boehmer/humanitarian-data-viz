@@ -1,3 +1,6 @@
+var nameToFeatureMap = Array();
+var tooltip;
+
 viz = { init :function(afterDataLoad, preventCountrySelection) {
 
 /////////////////////////////////////////////////////////////////////////
@@ -10,8 +13,7 @@ viz = { init :function(afterDataLoad, preventCountrySelection) {
     var width = document.getElementById('container').offsetWidth;
     var height = width / 2;
     var topo, projection, path, svg, g;
-    var nameToFeatureMap = Array();
-    var tooltip = d3.select("#container").append("div").attr("class", "tooltip hidden");
+    tooltip = d3.select("#container").append("div").attr("class", "tooltip hidden");
     var flow_tooltip = d3.select("#container").append("div").attr("class", "tooltip hidden");
     // Create the arc creator function
     var arc = d3.geo.greatArc().precision(1);
@@ -89,7 +91,6 @@ viz = { init :function(afterDataLoad, preventCountrySelection) {
             .attr("title", function(d, i) {
                 return d.properties.name;
             })
-            // .style("fill","#888")
             .style("fill", function(d, i) {
                 return d.properties.color;
             });
@@ -185,12 +186,12 @@ viz = { init :function(afterDataLoad, preventCountrySelection) {
     }
 
     function plotFlows(data, countryCode, arg3, operationType) {
-
+	angular.element($("#control-panel")).scope().updateCountry(data.properties.name);
         selectedCountryData = data;
-        //Lighten all other countries
-        g.selectAll(".country").style("fill", '#ddd');
+	//Lighten all other countries
+        g.selectAll(".country").style("fill", '#FFF');
         //Darken the current country
-        $(this).css('fill', shade(data.properties.color, -0.5))
+        $(this).css('fill', data.properties.color);
 
         // Remove existing flow arcs
         d3.selectAll(".flow_migration_to").remove();
@@ -199,7 +200,6 @@ viz = { init :function(afterDataLoad, preventCountrySelection) {
         d3.selectAll(".flow_asylum_from").remove();
         if (typeof operationType === 'undefined')
             operationType = angular.element($("#control-panel")).scope().operation.toLowerCase();
-        console.log(operationType)
          $('#vizLoading').modal('show')
 
 
@@ -213,7 +213,6 @@ viz = { init :function(afterDataLoad, preventCountrySelection) {
             },
             dataType: "json",
             success: function(movingData) {
-                console.log(movingData.length + ' # of rows')
                 if (movingData.length == 0){
                     var modal = $('#noDataModal').modal('show')
                     modal.css('margin-top', ($(window).height() - modal.height()) / 2 - parseInt(modal.css('padding-top')))
@@ -274,7 +273,7 @@ viz = { init :function(afterDataLoad, preventCountrySelection) {
             var mouseOverPath = function(d, i, j) {
                 //Darken the current country
                 var ele = $("#"+nameToFeatureMap[d].id);
-                ele.css('fill', shade(nameToFeatureMap[d].properties.color, -0.5))
+                ele.css('fill', shade(nameToFeatureMap[d].properties.color, -0.5)); 
 
                 // $(this).addClass("flow-hightlight_"+operationType)
                 $(this).attr("class", "flow-hightlight_"+operationType)
@@ -288,7 +287,7 @@ viz = { init :function(afterDataLoad, preventCountrySelection) {
             }
             var mouseExitPath = function(d, i) {
                 var ele = $("#"+nameToFeatureMap[d].id);
-                ele.css('fill', shade(nameToFeatureMap[d].properties.color, 0.5))              
+                ele.css('fill', nameToFeatureMap[d].properties.color);              
                 flow_tooltip.classed("hidden", true);
                 $(this).attr("class", "flow_"+operationType)
             }
@@ -302,11 +301,10 @@ viz = { init :function(afterDataLoad, preventCountrySelection) {
                 .on("mouseout", mouseExitPath)
             if(typeof nameToFeatureMap[targetCountry] != 'undefined'){
                 var ele = $("#"+nameToFeatureMap[targetCountry].id);
-                ele.css('fill', shade(nameToFeatureMap[targetCountry].properties.color, 0.5)) 
+                ele.css('fill', nameToFeatureMap[targetCountry].properties.color); 
             }                 
         }
     }
-
 /////////////////////////////////////////////////////////////////////////
 //////////////////////      Utility Functions       /////////////////////
 /////////////////////////////////////////////////////////////////////////
@@ -334,33 +332,33 @@ viz = { init :function(afterDataLoad, preventCountrySelection) {
     }
 
 
-//http://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
-function shadeColor2(color, percent) {   
-    var f=parseInt(color.slice(1),16),t=percent<0?0:255,p=percent<0?percent*-1:percent,R=f>>16,G=f>>8&0x00FF,B=f&0x0000FF;
-    return "#"+(0x1000000+(Math.round((t-R)*p)+R)*0x10000+(Math.round((t-G)*p)+G)*0x100+(Math.round((t-B)*p)+B)).toString(16).slice(1);
-}
+	//http://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
+	function shadeColor2(color, percent) {   
+	    var f=parseInt(color.slice(1),16),t=percent<0?0:255,p=percent<0?percent*-1:percent,R=f>>16,G=f>>8&0x00FF,B=f&0x0000FF;
+	    return "#"+(0x1000000+(Math.round((t-R)*p)+R)*0x10000+(Math.round((t-G)*p)+G)*0x100+(Math.round((t-B)*p)+B)).toString(16).slice(1);
+	}
 
-function blendColors(c0, c1, p) {
-    var f=parseInt(c0.slice(1),16),t=parseInt(c1.slice(1),16),R1=f>>16,G1=f>>8&0x00FF,B1=f&0x0000FF,R2=t>>16,G2=t>>8&0x00FF,B2=t&0x0000FF;
-    return "#"+(0x1000000+(Math.round((R2-R1)*p)+R1)*0x10000+(Math.round((G2-G1)*p)+G1)*0x100+(Math.round((B2-B1)*p)+B1)).toString(16).slice(1);
-}
-function shadeRGBColor(color, percent) {
-    var f=color.split(","),t=percent<0?0:255,p=percent<0?percent*-1:percent,R=parseInt(f[0].slice(4)),G=parseInt(f[1]),B=parseInt(f[2]);
-    return "rgb("+(Math.round((t-R)*p)+R)+","+(Math.round((t-G)*p)+G)+","+(Math.round((t-B)*p)+B)+")";
-}
+	function blendColors(c0, c1, p) {
+	    var f=parseInt(c0.slice(1),16),t=parseInt(c1.slice(1),16),R1=f>>16,G1=f>>8&0x00FF,B1=f&0x0000FF,R2=t>>16,G2=t>>8&0x00FF,B2=t&0x0000FF;
+	    return "#"+(0x1000000+(Math.round((R2-R1)*p)+R1)*0x10000+(Math.round((G2-G1)*p)+G1)*0x100+(Math.round((B2-B1)*p)+B1)).toString(16).slice(1);
+	}
+	function shadeRGBColor(color, percent) {
+	    var f=color.split(","),t=percent<0?0:255,p=percent<0?percent*-1:percent,R=parseInt(f[0].slice(4)),G=parseInt(f[1]),B=parseInt(f[2]);
+	    return "rgb("+(Math.round((t-R)*p)+R)+","+(Math.round((t-G)*p)+G)+","+(Math.round((t-B)*p)+B)+")";
+	}
 
-function blendRGBColors(c0, c1, p) {
-    var f=c0.split(","),t=c1.split(","),R=parseInt(f[0].slice(4)),G=parseInt(f[1]),B=parseInt(f[2]);
-    return "rgb("+(Math.round((parseInt(t[0].slice(4))-R)*p)+R)+","+(Math.round((parseInt(t[1])-G)*p)+G)+","+(Math.round((parseInt(t[2])-B)*p)+B)+")";
-}
-function shade(color, percent){
-    if (color.length > 7 ) return shadeRGBColor(color,percent);
-    else return shadeColor2(color,percent);
-}
-function blend(color1, color2, percent){
-    if (color1.length > 7) return blendRGBColors(color1,color2,percent);
-    else return blendColors(color1,color2,percent);
-}
+	function blendRGBColors(c0, c1, p) {
+	    var f=c0.split(","),t=c1.split(","),R=parseInt(f[0].slice(4)),G=parseInt(f[1]),B=parseInt(f[2]);
+	    return "rgb("+(Math.round((parseInt(t[0].slice(4))-R)*p)+R)+","+(Math.round((parseInt(t[1])-G)*p)+G)+","+(Math.round((parseInt(t[2])-B)*p)+B)+")";
+	}
+	function shade(color, percent){
+	    if (color.length > 7 ) return shadeRGBColor(color,percent);
+	    else return shadeColor2(color,percent);
+	}
+	function blend(color1, color2, percent){
+	    if (color1.length > 7) return blendRGBColors(color1,color2,percent);
+	    else return blendColors(color1,color2,percent);
+	}
 
 /////////////////////////////////////////////////////////////////////////
 //////////////////////                              /////////////////////
@@ -481,4 +479,43 @@ function blend(color1, color2, percent){
     return this;
 
 }}
+//})();
 
+function indicatorRecolor(data, indicatorType) {
+	
+
+	var max = Math.max.apply(Math,data.map(function(o){return o[indicatorType]}));
+	var min = Math.min.apply(Math,data.map(function(o){return o[indicatorType]}));
+	var datalessFeatures = Object.keys(nameToFeatureMap);
+
+	for(var i = 0; i < data.length; i++) {
+		var obj = data[i];
+		if(typeof nameToFeatureMap[obj.country] != 'undefined') {
+			datalessFeatures.splice(datalessFeatures.indexOf(obj.country),1);
+			var multiplier = Math.pow(((max-min) - (obj[indicatorType]-min))/(max-min), 3);
+			var colorConst = 207;
+			var r = parseInt(colorConst*multiplier);
+			var g = parseInt(colorConst*multiplier);
+			var b = parseInt(colorConst*multiplier);
+			var newColor = 'rgba(' +r+ ',' +g+ ',' +b+ ',1)';
+			var element = $('#'+nameToFeatureMap[obj.country].id);
+			element.css('fill', newColor);
+			element.css('stroke','#DDD');
+			nameToFeatureMap[obj.country].properties.color = newColor;
+		}	
+	}	
+	// now remove dataless features from viz by turning them white against a white background
+	for(var i = 0; i < datalessFeatures.length; i++) {
+		var element = $('#'+nameToFeatureMap[datalessFeatures[i]].id);
+		element.css('fill', 'white');
+		nameToFeatureMap[datalessFeatures[i]].properties.color = 'white';
+	}
+
+}
+
+function removeAllFlows() {
+        d3.selectAll(".flow_migration_to").remove();
+        d3.selectAll(".flow_migration_from").remove();
+        d3.selectAll(".flow_asylum_to").remove();
+        d3.selectAll(".flow_asylum_from").remove();
+}

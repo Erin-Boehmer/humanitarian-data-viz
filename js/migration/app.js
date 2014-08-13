@@ -23,4 +23,3 @@ config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/nikhil', {templateUrl: 'partials/nikhil.html', controller: 'CommonController'});
   $routeProvider.otherwise({redirectTo: '/introduction'});
 }]);
-console.log("app.js");

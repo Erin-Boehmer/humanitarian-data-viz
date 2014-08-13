@@ -10,18 +10,28 @@
 	top:60px;
 	left: 230px;
 	width: 220px;
-	background-color:rgba(255,255,255,0.5);
+	background-color:rgba(255,255,255,0.3);
 }
+
+#container #control-panel:hover {
+	background-color:rgba(255,255,255,1);
+}
+
+
 #container #data-panel {
   position: absolute;
   cursor: pointer;
   z-index:100;
-  top:300px;
+  top:340px;
   left: 230px;
   width: 220px;
   background-color:rgba(255,255,255,0.5);
   height: 220px;
   overflow:hidden;
+}
+
+#container #data-panel:hover {
+	background-color:rgba(255,255,255,1);
 }
 
 .data-panel-table{
@@ -33,10 +43,21 @@
   background-color: rgb(60, 141, 188) ;
 }
 
+#indicator-key {
+  background-image: linear-gradient(to right, white, black);
+  height: 25px;
+  width: 188px;
+}
+
 .country:hover{
-  stroke: #fff;
+  stroke: #FFF;
   stroke-width: 1.5px;
 }
+
+.country {
+  stroke:#DDD;
+}
+
 .text{
   font-size:10px;
   text-transform:capitalize;
