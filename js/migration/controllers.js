@@ -7,7 +7,7 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
 	var migration = viz.init();
 	$scope.operation = 'Asylum_from';
 	$scope.newValue = function(value) {
-	      window.onSelectOperation(value)
+	      migration.onSelectOperation(value)
 	}
 
 	$scope.countries = []
@@ -23,7 +23,6 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
 	$scope.setCountryList = function(countryList){
 		$scope.countryList = _.sortBy($scope.countries, function(ctry) {return ctry.name})
 		$scope.countries = countryList
-		// $scope.countries = _.sortBy($scope.countries, function(country) {return -1*country.count})
 	}
 	$scope.selectCountry = function(cntry){
 		migration.selectCountry(cntry)
@@ -83,12 +82,9 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
 		else if($scope.operation == "Migration_from") {
 			$scope.action = "People Migrating from ";
 		}
-		else if($scope.operation == "Migration_to") {
+		else {
 			$scope.action = "People Migrating to ";
 		}
-		else{
-			$scope.action = "";
-		};
 	});
 		
 	$scope.radioModel = 'Asylum_from';

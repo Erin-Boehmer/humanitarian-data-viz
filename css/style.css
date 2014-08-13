@@ -3,13 +3,24 @@
 	z-index:0;
 }
 
+#container #title {
+	position:relative; 
+	top:-60px; 
+	z-index:10000
+}
+
+#container #control-panel .btn {
+	width: 50px;
+}
+
 #container #control-panel {
+	z-index:10001;
 	position: absolute;
 	cursor: pointer;
 	z-index:1001;
 	top:60px;
 	left: 230px;
-	width: 220px;
+	width: 250px;
 	background-color:rgba(255,255,255,0.3);
 }
 
@@ -19,6 +30,7 @@
 
 
 #container #data-panel {
+  z-index:10002;
   position: absolute;
   cursor: pointer;
   z-index:100;
@@ -44,9 +56,9 @@
 }
 
 #indicator-key {
-  background-image: linear-gradient(to right, white, black);
+  background-image: linear-gradient(to right, rgb(207,207,207), black);
   height: 25px;
-  width: 188px;
+  width: 217px;
 }
 
 .country:hover{
@@ -160,6 +172,12 @@ div.tooltip {
 	height: 20%; 
 	border: 1px solid red
 }
+
+.modal {
+    z-index:100000;
+}
+
+
 #viz_dialog {
     width: 100px;
     height: 50px;

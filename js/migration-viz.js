@@ -518,4 +518,8 @@ function removeAllFlows() {
         d3.selectAll(".flow_migration_from").remove();
         d3.selectAll(".flow_asylum_to").remove();
         d3.selectAll(".flow_asylum_from").remove();
+	
+	//reset operation variable
+        var scope = angular.element($("#control-panel")).scope();
+	scope.$apply(function(){scope.country.selected = false;})
 }

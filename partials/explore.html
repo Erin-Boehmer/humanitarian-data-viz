@@ -2,18 +2,17 @@
 	<center><div id="title" ng-show="country.selected"><h2>{{action}}{{country.name}}</h2></div></center>
 	<div id="control-panel" class="panel panel-default" draggable>
 		<div class="panel-body">
-		<h5>Migrants</h5>
-		<div class="btn-group">
-        		<button type="button"  class="btn btn-primary operation" ng-model="operation" btn-radio="'Migration_from'"  ng-change='newValue(oepration)'>Leaving</button>
-        		<button type="button"  class="btn btn-success operation" ng-model="operation" btn-radio="'Migration_to'" ng-change='newValue(oepration)'>Arriving</button>
-		</div>
+		<div style="padding-right: 58px;" class="inline">Migrants</div>
+        		<button type="button"  class="btn btn-primary operation inline" ng-model="operation" btn-radio="'Migration_from'"  ng-change='newValue(oepration)'>Out</button>
+        		<button type="button"  class="btn btn-success operation inline" ng-model="operation" btn-radio="'Migration_to'" ng-change='newValue(oepration)'>In</button>
 
-		<h5>Asylum Seekers</h5>
-		<div class="btn-group">
-        		<button type="button"  class="btn btn-info operation" ng-model="operation" btn-radio="'Asylum_from'" ng-change='newValue(oepration)'>Leaving</button>
-        		<button type="button"  class="btn btn-warning operation" ng-model="operation" btn-radio="'Asylum_to'" ng-change='newValue(oepration)'>Arriving</button>
-		</div>
+		<br><br>
 
+		<div style="padding-right: 16px;" class="inline">Asylum Seekers</div>
+        		<button type="button"  class="btn btn-info operation inline" ng-model="operation" btn-radio="'Asylum_from'" ng-change='newValue(oepration)'>Out</button>
+        		<button type="button"  class="btn btn-warning operation inline" ng-model="operation" btn-radio="'Asylum_to'" ng-change='newValue(oepration)'>In</button>
+		
+		<br><hr>
 		<h5>Indicators</h5>
 	  	<ui-select ng-model="indicator.selected" theme="selectize">
 	 		<ui-select-match placeholder="Select an indicator...">{{$select.selected.display}}</ui-select-match>
