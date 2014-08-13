@@ -107,7 +107,7 @@ viz = { init :function(afterDataLoad, preventCountrySelection) {
                 });
                 tooltip.classed("hidden", false)
                     .attr("style", "left:" + (mouse[0] + offsetL) + "px;top:" + (mouse[1] + offsetT) + "px")
-                    .html(d.properties.name);
+           	    .html(d.properties.name);
             })
             .on("mouseout", function(d, i) {
                 tooltip.classed("hidden", true);
@@ -234,14 +234,17 @@ viz = { init :function(afterDataLoad, preventCountrySelection) {
      * Result: Plots arcs from source country to every target country.
      */
     function plotLines(sourceCountry, operationType, movingData) {
+	var to = false;
         if (operationType == "asylum_from") {
-            var aggregateByTargetCountry = reduce(movingData, 'residence', 'applied_during_year');
+	        var aggregateByTargetCountry = reduce(movingData, 'residence', 'applied_during_year');
         } else if (operationType == "asylum_to") {
-            var aggregateByTargetCountry = reduce(movingData, 'origin', 'applied_during_year');
+		to = true;
+            	var aggregateByTargetCountry = reduce(movingData, 'origin', 'applied_during_year');
 	} else if (operationType == "migration_from") {
-            var aggregateByTargetCountry = reduce(movingData, 'country', 'value');
+		var aggregateByTargetCountry = reduce(movingData, 'country', 'value');
         } else if (operationType == "migration_to") {
-            var aggregateByTargetCountry = reduce(movingData, 'country_of_origin', 'value');
+		to = true;
+            	var aggregateByTargetCountry = reduce(movingData, 'country_of_origin', 'value');
 	} else {
             console.log("Neither migration nor asylum flows selected");
         }
@@ -283,7 +286,13 @@ viz = { init :function(afterDataLoad, preventCountrySelection) {
                 });
                 flow_tooltip.classed("hidden", false)
                     .attr("style", "left:" + (mouse[0] + offsetL) + "px;top:" + (mouse[1] + offsetT) + "px")
-                    .html('Country: ' + d + ", Applicants: " + aggregateByTargetCountry[d]);
+                    .html(function() {
+			if(to) {
+				return d + " &#8594;  " + sourceCountry + " |  Applicants: " + aggregateByTargetCountry[d];
+			} else {
+				return sourceCountry + " &#8594; " + d + " |  Applicants: " + aggregateByTargetCountry[d];
+			}
+		    });
             }
             var mouseExitPath = function(d, i) {
                 var ele = $("#"+nameToFeatureMap[d].id);
