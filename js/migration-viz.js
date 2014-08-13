@@ -521,5 +521,5 @@ function removeAllFlows() {
 	
 	//reset operation variable
         var scope = angular.element($("#control-panel")).scope();
-	scope.$apply(function(){scope.country.selected = false;})
+	scope.$apply(function(){scope.country.selected = false; scope.country.name = "";})
 }

@@ -7,7 +7,9 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
 	var migration = viz.init();
 	$scope.operation = 'Asylum_from';
 	$scope.newValue = function(value) {
-	      migration.onSelectOperation(value)
+	      	if($scope.country.name != "") {
+	      		migration.onSelectOperation(value);
+		}
 	}
 
 	$scope.countries = []
