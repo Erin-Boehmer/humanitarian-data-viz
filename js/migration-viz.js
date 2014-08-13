@@ -1,4 +1,4 @@
-viz = { init :function() {
+viz = { init :function(afterDataLoad, preventCountrySelection) {
 
 /////////////////////////////////////////////////////////////////////////
 //////////////////////      INIT and SETUP         //////////////////////
@@ -50,6 +50,9 @@ viz = { init :function() {
                     }
                 });
             });
+
+            if (typeof afterDataLoad === 'function')
+                afterDataLoad();
         }
 
         d3.json("data/world-topo-min.json", function(error, world) {
@@ -65,7 +68,8 @@ viz = { init :function() {
                 countryList.push({name:feature.properties.name})
             }
             var scope = angular.element($("#data-panel")).scope();
-            scope.$apply(function(){scope.setCountryList(countryList);})
+            if (typeof scope != 'undefined')
+                scope.$apply(function(){scope.setCountryList(countryList);})
             setupCentroids();
         });
     }
@@ -107,7 +111,7 @@ viz = { init :function() {
             .on("mouseout", function(d, i) {
                 tooltip.classed("hidden", true);
             })
-            .on("click", plotFlows);
+            .on("click", onMapCountrySelect);
     }
 
     function redraw() {
@@ -163,18 +167,25 @@ viz = { init :function() {
     var selectedCountryData = null;
 
     //On selecting an operation
-    window.onSelectOperation = function(operation){
+    this.onSelectOperation = function(operation){
       if (selectedCountryData!=null)
           plotFlows(selectedCountryData, null,null, operation)        
     }
-    this.selectCountry = function(country){
-        console.log('xxxxxxxxxxxxxxxxxxxxxxxxx')
-        console.log(nameToFeatureMap[country])
-        plotFlows(nameToFeatureMap[country])
+    //When a country is selected from the data panel
+    this.selectCountry = function(country, operationType){
+        plotFlows(nameToFeatureMap[country], null, null, operationType)
     }
 
     //function to plot migration flows on country click
+    function onMapCountrySelect(data, countryCode, arg3, operationType) {
+        if (preventCountrySelection)
+            return
+        else
+            plotFlows(data, countryCode, arg3, operationType)
+    }
+
     function plotFlows(data, countryCode, arg3, operationType) {
+
         selectedCountryData = data;
         //Lighten all other countries
         g.selectAll(".country").style("fill", '#ddd');
@@ -210,7 +221,10 @@ viz = { init :function() {
                 }
                 plotLines(data.properties.name, operationType, movingData);
                 $('#vizLoading').modal('hide')
-
+            },  
+            error: function(err) {
+                console.log('Error occured')
+                console.log(err)
             }
         });
     }
@@ -235,7 +249,8 @@ viz = { init :function() {
         var source = getCentroid(sourceCountry);
         var max = Math.log(d3.max(d3.values(aggregateByTargetCountry)));
         var scope = angular.element($("#data-panel")).scope();
-        scope.$apply(function(){scope.resetCountries();})
+        // if (typeof scope != 'undefined')
+            scope.$apply(function(){scope.resetCountries();})
         for (var targetCountry in aggregateByTargetCountry) {
 
             var target = getCentroid(targetCountry);

@@ -1,1 +1,42 @@
-Zimbabwe
+<div id="container">
+  
+
+<!-- Modal -->
+<div class="modal  viz_dialog" id="noDataModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title text-center" id="myModalLabel">No data for this selection</h4>
+      </div>
+
+    </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal  viz_dialog" id="vizLoading" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <img src="img/spinnerColors.gif">
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+  <div id="data-panel" class="panel panel-default">
+    <div class="panel-body">
+    <input ng-model="searchText" placeholder="Filter">
+    <div class="data-panel-table">
+      <table id="countrySearchResults">
+        <tr><th>Country</th><th  ng-show="countries[0].count">Applicants</th></tr>
+        <tr ng-repeat="country in countries | filter:searchText" class="dataPanelRow" ng-click='selectCountry(country.name)'>
+          <td>{{country.name}}</td>
+          <td>{{country.count}}</td>
+        </tr>
+      </table>
+    </div>
+    </div>
+  </div>

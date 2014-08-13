@@ -13,7 +13,7 @@ angular.module('myApp', [
 ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/introduction', {templateUrl: 'partials/introduction.html', controller: 'CommonController'});
-  $routeProvider.when('/zimbabwe', {templateUrl: 'partials/zimbabwe.html', controller: 'CommonController'});
+  $routeProvider.when('/zimbabwe', {templateUrl: 'partials/zimbabwe.html', controller: 'ZimbabweController'});
   $routeProvider.when('/sudan', {templateUrl: 'partials/sudan.html', controller: 'CommonController'});
   $routeProvider.when('/syria', {templateUrl: 'partials/syria.html', controller: 'CommonController'});
   $routeProvider.when('/explore', {templateUrl: 'partials/explore.html', controller: 'ExploreController'});

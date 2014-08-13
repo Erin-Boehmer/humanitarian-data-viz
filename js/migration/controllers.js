@@ -13,7 +13,7 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
             $scope.operation = 'Asylum_from';
             $scope.newValue = function(value) {
                 console.log(value);
-                window.onSelectOperation(value)
+                migration.onSelectOperation(value)
             }
             $scope.addCountry = function(country){
             	$scope.countries.push(country);
@@ -28,7 +28,6 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
             	// $scope.countries = _.sortBy($scope.countries, function(country) {return -1*country.count})
             }
             $scope.selectCountry = function(country){
-            	console.log('llllllllllllllllllllllllllllllllllllll'+country)
             	migration.selectCountry(country)
             }
 
@@ -72,7 +71,23 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
 
         }
     ])
+.controller('ZimbabweController', ['$scope',
+    function($scope) {
+        var migration = viz.init(function(){
+	        migration.selectCountry('Zimbabwe', 'asylum_from')
+	    }, true)
+        $scope.addCountry = function(country){
+        }
+        $scope.resetCountries = function () {
+        }
+        $scope.setCountryList = function(countryList){
+        }
+        $scope.selectCountry = function(country){
+        }	    
+    }
 
+
+])
 .controller('CommonController', ['$scope',
     function($scope) {
 
