@@ -13,6 +13,16 @@
 		
 		<br><hr>
 		<h5 popover='{{explain.indicator}}' popover-trigger="mouseenter">Indicators</h5>
+		<h5>Year</h5>
+	  	<ui-select ng-model="year.selected" theme="selectize">
+	 		<ui-select-match placeholder="Select year...">{{$select.selected.display}}</ui-select-match>
+ 			<ui-select-choices repeat="year in years | filter: $select.search">
+      				<span ng-bind-html="year.display | highlight: $select.search"></span>
+    			</ui-select-choices>
+ 		</ui-select>
+			
+		<br><hr>
+		<h5>Indicators</h5>
 	  	<ui-select ng-model="indicator.selected" theme="selectize">
 	 		<ui-select-match placeholder="Select an indicator...">{{$select.selected.display}}</ui-select-match>
  			<ui-select-choices repeat="indicator in indicators | filter: $select.search">

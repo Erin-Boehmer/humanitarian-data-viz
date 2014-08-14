@@ -60,7 +60,24 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
 	$scope.explain.asylum = "Click the 'In' or 'Out' button and then click a country on the map to show the # of asylum applicants for that area";
 	$scope.explain.indicator = "Select a world development indicator below to recolor the map on a relative scale for that variable";
 
-	$scope.$watch('indicator.selected', function() {
+	$scope.year = {};	
+	$scope.years = [
+		{"year":"2003", "display":"2003"},
+		{"year":"2004", "display":"2004"},
+		{"year":"2005", "display":"2005"},
+		{"year":"2006", "display":"2006"},
+		{"year":"2007", "display":"2007"},
+		{"year":"2008", "display":"2008"},
+		{"year":"2009", "display":"2009"},
+		{"year":"2010", "display":"2010"},
+		{"year":"2011", "display":"2011"},
+		{"year":"2012", "display":"2012"},
+		{"year":"2013", "display":"2013"}
+	];
+	
+	$scope.year_selected = 0;
+	var callback = function() {
+		console.log($scope.year_selected);
 		if($scope.indicator.selected) {
 			$.ajax({
 				type: "GET",
@@ -68,7 +85,7 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
             			data: {
                 			"operation": "indicator",
 					"indicator": $scope.indicator.selected.column_name,
-					"year":"1990"
+					"year": $scope.year_selected == 0 ? '1990' : $scope.year_selected
             			},
             			dataType: "json",
             			success: function(indicatorData) {
@@ -77,8 +94,10 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
 				}
 			});
 		}
-	});
-
+	};
+	$scope.$watch('indicator.selected', callback);
+	$scope.$watch('year.selected', function() {$scope.year_selected = $scope.year.selected.year;});
+	
 	$scope.$watch('operation', function() {
 		if($scope.operation == "Asylum_from") {
 			$scope.action = "People Seeking Asylum from ";
