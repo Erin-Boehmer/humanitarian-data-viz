@@ -23,8 +23,8 @@ angular.module('myApp.directives', []).
       		});
 
       		function mousemove(event) {
-			console.log("MOUSEMOVE");
-			console.log("screen Y, start Y, screenX, startX, x, y");
+      			// console.log("MOUSEMOVE");
+      			// console.log("screen Y, start Y, screenX, startX, x, y");
         		y = event.screenY - startY;
         		x = event.screenX - startX;
 			
