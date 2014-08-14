@@ -92,8 +92,9 @@ viz = { init :function(afterDataLoad, preventCountrySelection) {
                 return d.properties.name;
             })
             .style("fill", function(d, i) {
-                return d.properties.color;
-            });
+	    	d.properties.color = "#333";
+		return d.properties.color;
+	    });
 
         //offsets for tooltips
         var offsetL = document.getElementById('container').offsetLeft + 20;
@@ -509,7 +510,7 @@ function indicatorRecolor(data, indicatorType) {
 			var newColor = 'rgba(' +r+ ',' +g+ ',' +b+ ',1)';
 			var element = $('#'+nameToFeatureMap[obj.country].id);
 			element.css('fill', newColor);
-			element.css('stroke','#DDD');
+			element.css('stroke','#333');
 			nameToFeatureMap[obj.country].properties.color = newColor;
 		}	
 	}	

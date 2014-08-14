@@ -62,12 +62,12 @@
 }
 
 .country:hover{
-  stroke: #FFF;
+  stroke: #000;
   stroke-width: 1.5px;
 }
 
 .country {
-  stroke:#DDD;
+  stroke:#333;
 }
 
 .text{
