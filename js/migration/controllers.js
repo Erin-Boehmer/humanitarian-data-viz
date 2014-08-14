@@ -134,14 +134,38 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
     ])
     .controller('ZimbabweController', ['$scope',
         function($scope) {
-            var migration = viz.init(function() {
+         $scope.operation = 'asylum_from';
+         var migration = viz.init(function() {
                 migration.selectCountry('Zimbabwe', 'asylum_from')
             }, true)
             $scope.addCountry = function(country) {}
             $scope.resetCountries = function() {}
             $scope.setCountryList = function(countryList) {}
             $scope.selectCountry = function(country) {}
-        }
+  
+
+			$scope.year = {};
+			// $scope.years = [2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013]
+			$scope.years = [
+			    {"year":"2003", "display":"2003"},
+			    {"year":"2004", "display":"2004"},
+			    {"year":"2005", "display":"2005"},
+			    {"year":"2006", "display":"2006"},
+			    {"year":"2007", "display":"2007"},
+			    {"year":"2008", "display":"2008"},
+			    {"year":"2009", "display":"2009"},
+			    {"year":"2010", "display":"2010"},
+			    {"year":"2011", "display":"2011"},
+			    {"year":"2012", "display":"2012"},
+			    {"year":"2013", "display":"2013"}
+			];
+			$scope.year.selected = $scope.years[7];
+		    $scope.yearChanged = function(){
+		    	migration.onSelectOperation();
+		    	$scope.indicatorChanged();
+		    }
+		}
+
     ])
 
 .controller('CommonController', ['$scope',

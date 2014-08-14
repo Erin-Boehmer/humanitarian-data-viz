@@ -200,6 +200,8 @@ viz = {
             }
 
             function plotFlows(data, countryCode, arg3, operationType) {
+                console.log(operationType)
+                if (typeof angular.element($("#control-panel")).scope().updateCountry != 'undefined')
                 angular.element($("#control-panel")).scope().updateCountry(data.properties.name);
                 selectedCountryData = data;
                 //Lighten all other countries

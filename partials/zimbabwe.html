@@ -1,6 +1,21 @@
 <div id="container">
   
 
+
+    <div id="control-panel" class="panel panel-default" draggable>
+    <div class="panel-body">
+
+    <h5 popover='{{explain.indicator}}' popover-trigger="mouseenter">Year</h5>
+      <ui-select ng-model="year.selected" theme="selectize" ng-change="yearChanged()">
+      <ui-select-match placeholder="Select year...">{{year.selected.year}}</ui-select-match>
+      <ui-select-choices repeat="year in years | filter: $select.search">
+              <span ng-bind-html="year.display | highlight: $select.search"></span>
+          </ui-select-choices>
+    </ui-select>
+      
+    </div>
+  </div>
+
 <!-- Modal -->
 <div class="modal  viz_dialog" id="noDataModal" tabindex="-1" role="dialog">
   <div class="modal-dialog">
