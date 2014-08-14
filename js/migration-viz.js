@@ -494,20 +494,39 @@ viz = { init :function(afterDataLoad, preventCountrySelection) {
 function indicatorRecolor(data, indicatorType) {
 	
 
-	var max = Math.max.apply(Math,data.map(function(o){return o[indicatorType]}));
-	var min = Math.min.apply(Math,data.map(function(o){return o[indicatorType]}));
+	var rawValues = data.map(function(o){return o[indicatorType]});
+	var indicatorValueList = [];
+	var listLength = rawValues.length;
+
+	for(var i = 0; i < listLength; i++) {
+		if(rawValues[i] != 0) {
+			indicatorValueList.push(rawValues[i]);
+		}
+	}
+	console.log(indicatorValueList);
+	var max = Math.max.apply(Math, indicatorValueList);
+	var min = Math.min.apply(Math,indicatorValueList);
+
 	var datalessFeatures = Object.keys(nameToFeatureMap);
+	console.log(max);
+	console.log(min);
+	var colorConst = 207;
+	var r,g,b, newColor;
 
 	for(var i = 0; i < data.length; i++) {
 		var obj = data[i];
 		if(typeof nameToFeatureMap[obj.country] != 'undefined') {
 			datalessFeatures.splice(datalessFeatures.indexOf(obj.country),1);
-			var multiplier = Math.pow(((max-min) - (obj[indicatorType]-min))/(max-min), 3);
-			var colorConst = 207;
-			var r = parseInt(colorConst*multiplier);
-			var g = parseInt(colorConst*multiplier);
-			var b = parseInt(colorConst*multiplier);
-			var newColor = 'rgba(' +r+ ',' +g+ ',' +b+ ',1)';
+			if(obj[indicatorType] != 0) {
+				var multiplier = Math.pow(((max-min) - (obj[indicatorType]-min))/(max-min), 3);
+				r = parseInt(colorConst*multiplier);
+				g = parseInt(colorConst*multiplier);
+				b = parseInt(colorConst*multiplier);
+				newColor = 'rgba(' +r+ ',' +g+ ',' +b+ ',1)';
+			} else {
+				colorConst = 250;
+				newColor = 'rgba(' +colorConst+ ',' +colorConst+ ',' +colorConst+ ',1)';
+			}
 			var element = $('#'+nameToFeatureMap[obj.country].id);
 			element.css('fill', newColor);
 			element.css('stroke','#333');

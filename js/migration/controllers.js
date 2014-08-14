@@ -44,17 +44,22 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
   	$scope.indicator = {};
 	// Derived from data in postgres DB indicators_new
 	$scope.indicators = [
-		{"column_name":"battle_deaths", "display":"Deaths in Battle"},
-		{"column_name":"student_exp", "display":"Student Expectancy"},
-		{"column_name":"infant_deaths", "display":"Infant Deaths"},
-		{"column_name":"mobile", "display":"Mobile Phone Users"},
-		{"column_name":"employed_worker", "display":"Employed Workers"},
-		{"column_name":"gdp", "display":"GDP"},
-		{"column_name":"life_exp", "display":"Life Expectancy"},
-		{"column_name":"vehicles", "display":"Number of Vehicles"},
-		{"column_name":"sanitization", "display":"Sanitization"}
+		{"column_name":"battle_deaths", "display":"Deaths in Battle", "description":"Deaths in battle-related conflicts between warring parties"},
+		{"column_name":"student_exp", "display":"Student Expenditure", "description":"Public expenditure per pupil as a % of GDP per capita"},
+		{"column_name":"infant_deaths", "display":"Infant Deaths", "description":"Number of infants dying before reaching one year of age"},
+		{"column_name":"mobile", "display":"Mobile Phone Users", "description":"Mobile cellular subscriptions (per 100 people), including prepaid and post-paid subscriptions"},
+		{"column_name":"employed_worker", "display":"Employed Workers", "description":"Wage and salaried workers as a percentage of total employed"},
+		{"column_name":"gdp", "display":"GDP", "description":"GDP per capita (current US$)"},
+		{"column_name":"life_exp", "display":"Life Expectancy", "description":" Life expectancy at birth, total (years)"},
+		{"column_name":"vehicles", "display":"Number of Vehicles", "description":"Four-wheeled motor vehicles (per 1,000 people) "},
+		{"column_name":"sanitization", "display":"Sanitization", "description":"Percent of population wtih access to improved sanitation facilities"}
 	];
 	
+	$scope.explain = {};
+	$scope.explain.migration = "Click the 'In' or 'Out' button and then click a country on the map to show the migrant flow for that area";
+	$scope.explain.asylum = "Click the 'In' or 'Out' button and then click a country on the map to show the # of asylum applicants for that area";
+	$scope.explain.indicator = "Select a world development indicator below to recolor the map on a relative scale for that variable";
+
 	$scope.$watch('indicator.selected', function() {
 		if($scope.indicator.selected) {
 			$.ajax({

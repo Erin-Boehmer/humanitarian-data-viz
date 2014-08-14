@@ -2,22 +2,21 @@
 	<center><div id="title" ng-show="country.selected"><h2>{{action}}{{country.name}}</h2></div></center>
 	<div id="control-panel" class="panel panel-default" draggable>
 		<div class="panel-body">
-		<div style="padding-right: 58px;" class="inline">Migrants</div>
+		<div style="padding-right: 58px;" class="inline" popover='{{explain.migration}}' popover-trigger="mouseenter" popover-placement="bottom">Migrants</div>
         		<button type="button"  class="btn btn-primary operation inline" ng-model="operation" btn-radio="'Migration_from'"  ng-change='newValue(oepration)'>Out</button>
         		<button type="button"  class="btn btn-success operation inline" ng-model="operation" btn-radio="'Migration_to'" ng-change='newValue(oepration)'>In</button>
 
 		<br><br>
-
-		<div style="padding-right: 16px;" class="inline">Asylum Seekers</div>
+		<div style="padding-right: 16px;" class="inline" popover='{{explain.asylum}}' popover-trigger="mouseenter" popover-placement="bottom">Asylum Seekers</div>
         		<button type="button"  class="btn btn-info operation inline" ng-model="operation" btn-radio="'Asylum_from'" ng-change='newValue(oepration)'>Out</button>
         		<button type="button"  class="btn btn-warning operation inline" ng-model="operation" btn-radio="'Asylum_to'" ng-change='newValue(oepration)'>In</button>
 		
 		<br><hr>
-		<h5>Indicators</h5>
+		<h5 popover='{{explain.indicator}}' popover-trigger="mouseenter">Indicators</h5>
 	  	<ui-select ng-model="indicator.selected" theme="selectize">
 	 		<ui-select-match placeholder="Select an indicator...">{{$select.selected.display}}</ui-select-match>
  			<ui-select-choices repeat="indicator in indicators | filter: $select.search">
-      				<span ng-bind-html="indicator.display | highlight: $select.search"></span>
+      				<span popover='{{indicator.description}}' popover-placement="right" popover-trigger="mouseenter" ng-bind-html="indicator.display | highlight: $select.search"></span>
     			</ui-select-choices>
  		</ui-select>
 			
