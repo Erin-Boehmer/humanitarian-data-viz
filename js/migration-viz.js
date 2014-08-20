@@ -277,6 +277,9 @@ viz = {
                     })
                     for (var targetCountry in aggregateByTargetCountry) {
 
+                        if (aggregateByTargetCountry[targetCountry]==0)
+                            continue;
+
                         var target = getCentroid(targetCountry);
                         // var target = projection.invert(projection(nameToFeatureMap[targetCountry].centroid));
                         link = {
@@ -319,11 +322,11 @@ viz = {
                                     } else {
                                         return sourceCountry + " &#8594; " + d + " |  Applicants: " + aggregateByTargetCountry[d];
                                     }
-                                });
+                                }); 
                         }
                         var mouseExitPath = function(d, i) {
                             var ele = $("#" + nameToFeatureMap[d].id);
-                            ele.css('fill', nameToFeatureMap[d].properties.color);
+                            ele.css('fill', shade(nameToFeatureMap[d].properties.color, 0.8));
                             flow_tooltip.classed("hidden", true);
                             $(this).attr("class", "flow_" + operationType)
                         }
