@@ -1,18 +1,26 @@
 <div id="container">
-    <div id="control-panel" class="panel panel-default">
-    	<div class="panel-body">
-		<div ng-mouseup="yearChanged()" >
-                <slider
-                        ng-model="year"
-                        floor="2003"
-                        ceiling="2013"
-                        step="1">
-                </slider>
-        	</div> 
-    
-	</div>
-     </div>
-    
+    	<div id="control-panel" class="panel panel-default">
+                <div style="width:100%; cursor: pointer;" ng-class="panelToggleClass" ng-click='controlPanelToggle()'></div>
+    		<div id="control-panel-body" class="panel-body">
+			<div ng-mouseup="yearChanged()" >
+                	<slider
+                        	ng-model="year"
+                        	floor="2003"
+                        	ceiling="2013"
+                        	step="1">
+                	</slider>
+        		</div> 
+				
+			<hr>
+			<div id="story">
+				<center><img id="story-image" src='{{story[year].imglink}}' alt="Story image"></img></center><br>
+				<p>{{story[year].text}}</p>
+			</div>
+
+
+		</div>
+     	</div>
+	
 	<!--  Data Panel -->
   	<div id="data-panel" class="panel panel-default" draggable>
    		 <div class="panel-body">

@@ -21,7 +21,6 @@
 #container #control-panel {
 	z-index:10001;
 	position: absolute;
-	z-index:1001;
 	top:60px;
 	left: 230px;
 	width: 250px;
@@ -32,6 +31,12 @@
 	background-color:rgba(255,255,255,1);
 }
 
+#story-image {
+  width:auto;
+  max-width:100%;
+  height:auto;
+  border: 2px solid #333;
+}
 
 #container #data-panel {
   z-index:10002;
