@@ -1,10 +1,6 @@
 <div id="container">
-  
-
-
     <div id="control-panel" class="panel panel-default">
     	<div class="panel-body">
-		<h5>Year</h5>
 		<div ng-mouseup="yearChanged()" >
                 <slider
                         ng-model="year"
@@ -16,21 +12,28 @@
     
 	</div>
      </div>
-    <!--  Data Panel -->
-  <!--<div id="data-panel" class="panel panel-default" draggable>
-    <div class="panel-body">
-    <input ng-model="searchText" placeholder="Filter">
-    <div class="data-panel-table">
-      <table id="countrySearchResults">
-        <tr><th>Country</th><th  ng-show="countries[0].count">Applicants</th></tr>
-        <tr ng-repeat="country in countries | filter:searchText" class="dataPanelRow" ng-click='selectCountry(country.name)'>
-          <td>{{country.name}}</td>
-          <td>{{country.count}}</td>
-        </tr>
-      </table>
-    </div>
-    </div>-->
-  </div>
+    
+	<!--  Data Panel -->
+  	<div id="data-panel" class="panel panel-default" draggable>
+   		 <div class="panel-body">
+    			<input ng-model="searchText" placeholder="Filter">
+    			<div class="data-panel-table">
+      				<table id="countrySearchResults">
+        				<tr><th>Country</th><th  ng-show="countries[0].count">Applicants</th></tr>
+        				<tr ng-repeat="country in countries | filter:searchText" class="dataPanelRow">
+          				<td>{{country.name}}</td>
+          				<td>{{country.count}}</td>
+        				</tr>
+      				</table>
+    			</div>
+    		</div>
+  	</div>
+
+	<div id="total-asylum-title" ng-show="totalApplicants">
+		<h1><strong>{{totalApplicants}}</strong></h1>
+		<h3>Total Zimbabwean Asylum Applicants in {{year}}</h3>
+	</div>
+
 </div>
 
 
@@ -60,18 +63,3 @@
     </div>
   </div>
 </div>
-
-<!--  <div id="data-panel" class="panel panel-default">
-    <div class="panel-body">
-    <input ng-model="searchText" placeholder="Filter"></input>
-    <div class="data-panel-table">
-      <table id="countrySearchResults">
-        <tr><th>Country</th><th  ng-show="countries[0].count">Applicants</th></tr>
-        <tr ng-repeat="country in countries | filter:searchText" class="dataPanelRow" ng-click='selectCountry(country.name)'>
-          <td>{{country.name}}</td>
-          <td>{{country.count}}</td>
-        </tr>
-      </table>
-    </div>
-    </div>
-  </div>-->

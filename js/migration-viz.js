@@ -316,8 +316,7 @@ viz = {
                         dValue = path(arc(link));
 
                         var strokeValue = Math.log(aggregateByTargetCountry[targetCountry] + 1) / max;
-                        // scope.$apply(function(){scope.countries.push({name:targetCountry, count:aggregateByTargetCountry[targetCountry]});})
-                        scope.$apply(function() {
+			scope.$apply(function() {
                             scope.addCountry({
                                 name: targetCountry,
                                 count: aggregateByTargetCountry[targetCountry]

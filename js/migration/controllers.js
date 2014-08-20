@@ -130,20 +130,45 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
          $scope.operation = 'asylum_from';
          var migration = viz.init(function() {
                 migration.selectCountry('Zimbabwe', 'asylum_from')
-            }, true)
-            $scope.addCountry = function(country) {}
-            $scope.resetCountries = function() {}
-            $scope.setCountryList = function(countryList) {}
-            $scope.selectCountry = function(country) {}
-  
+         }, true)
 
-                $scope.year = 2003;
+	//Variables for title
+	$scope.totalApplicants = 0;
 
-                    $scope.yearChanged = function(){
-                        migration.onSelectOperation();
-                        console.log($scope.year);
-                        $scope.indicatorChanged();
-                    }
+	$scope.countries = [];
+	$scope.addCountry = function(ctry) {
+		$scope.countries.push(ctry);
+              	$scope.countries = _.sortBy($scope.countries, function(ctry) {return -1 * ctry.count});
+	}
+        $scope.setCountryList = function(countryList) {
+		$scope.countryList = _.sortBy($scope.countries, function(ctry) {
+                	return ctry.name
+                })
+                $scope.countries = countryList;
+	}
+
+	$scope.$watch('countries', function() {
+		$scope.totalApplicants = 0;
+		$scope.countries.forEach(function(element, index, array) {
+			if(element.count > 0) 
+				$scope.totalApplicants += element.count;
+		});
+		console.log($scope.totalApplicants);
+	});
+
+	//Set functions required in "ExploreController" to do nothing
+        $scope.resetCountries = function() {
+		$scope.countries = []
+	}
+        $scope.selectCountry = function(country) {}
+
+       	$scope.year = 2003;
+
+       	$scope.yearChanged = function(){
+		migration.onSelectOperation();
+                console.log($scope.year);
+                $scope.indicatorChanged();
+        }
 
    } ])
 
