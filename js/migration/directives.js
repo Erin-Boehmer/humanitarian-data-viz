@@ -15,6 +15,7 @@ angular.module('myApp.directives', []).
 		var startX = 0, startY = 0, x = element.css('left').slice(0,-2), y = element.css('top').slice(0,-2);
 		element.on('mousedown', function(event) {
         		// Prevent default dragging of selected content
+			event.stopPropagation();
         		event.preventDefault();
         		startX = event.screenX - x;
         		startY = event.screenY - y;
@@ -23,8 +24,6 @@ angular.module('myApp.directives', []).
       		});
 
       		function mousemove(event) {
-      			// console.log("MOUSEMOVE");
-      			// console.log("screen Y, start Y, screenX, startX, x, y");
         		y = event.screenY - startY;
         		x = event.screenX - startX;
 			

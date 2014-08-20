@@ -8,6 +8,11 @@ viz = {
             //////////////////////      INIT and SETUP         //////////////////////
             /////////////////////////////////////////////////////////////////////////
 
+	    // Color constants
+	    var yellow = "#FFB524";
+	    var lightBlack = "#333";
+	    var grey = "#646464";
+
             var zoom = d3.behavior.zoom()
                 .scaleExtent([1, 9])
                 .on("zoom", move);
@@ -18,6 +23,7 @@ viz = {
             var flow_tooltip = d3.select("#container").append("div").attr("class", "tooltip hidden");
             // Create the arc creator function
             var arc = d3.geo.greatArc().precision(1);
+	    var bundle = d3.layout.bundle();
             setup(width, height);
 
             function setup(width, height) {
@@ -58,6 +64,19 @@ viz = {
                     if (typeof afterDataLoad === 'function')
                         afterDataLoad();
                 }
+		
+		var setupContinents = function() { 
+			d3.csv("data/country-continent.csv", function(error, data) {
+				_.each(data, function(val) {
+					var country = nameToFeatureMap[val.COUNTRY];
+					if(country) {
+						country.continent = val.CONTINENT;
+					} else {
+						console.log(val);
+					}
+				})
+			});
+		}
 
                 d3.json("data/world-topo-min.json", function(error, world) {
                     var countries = topojson.feature(world, world.objects.countries).features;
@@ -73,12 +92,13 @@ viz = {
                             name: feature.properties.name
                         })
                     }
-                    var scope = angular.element($("#data-panel")).scope();
+                    var scope = angular.element($("#control-panel")).scope();
                     if (typeof scope != 'undefined')
                         scope.$apply(function() {
                             scope.setCountryList(countryList);
                         })
                     setupCentroids();
+		    setupContinents();
                 });
             }
 
@@ -97,11 +117,11 @@ viz = {
                     .attr("title", function(d, i) {
                         return d.properties.name;
                     })
-                    .style("fill", function(d, i) {
+                    .style("fill", grey/*function(d, i) {
                         // d.properties.color = "#333";
-                        d.properties.originalcolor = d.properties.color
-                        return shade(d.properties.color, 0.25);
-                    });
+                        //d.properties.originalcolor = d.properties.color
+                        //return shade(d.properties.color, 0.25);
+                    }*/);
 
                 //offsets for tooltips
                 var offsetL = document.getElementById('container').offsetLeft + 20;
@@ -183,7 +203,7 @@ viz = {
                 }
                 //When a country is selected from the data panel
             this.selectCountry = function(country, operationType) {
-                plotFlows(nameToFeatureMap[country], null, null, operationType)
+                plotFlows(nameToFeatureMap[country], null, null, operationType);
             }
 
             // this.yearChanged = function(){
@@ -192,33 +212,41 @@ viz = {
 
             //function to plot migration flows on country click
             function onMapCountrySelect(data, countryCode, arg3, operationType) {
-                console.log('??????????????????')
                 if (preventCountrySelection)
                     return
-                else
-                    plotFlows(data, countryCode, arg3, operationType)
+                else {
+		    plotFlows(data, countryCode, arg3, operationType)
+		}
             }
 
             function plotFlows(data, countryCode, arg3, operationType) {
-                console.log(operationType)
-                if (typeof angular.element($("#control-panel")).scope().updateCountry != 'undefined')
-                angular.element($("#control-panel")).scope().updateCountry(data.properties.name);
+                var scope = angular.element($("#control-panel")).scope();
+		if (typeof scope.updateCountry != 'undefined') {
+			if(scope.country.name) {
+				$("#"+nameToFeatureMap[scope.country.name].id).css('stroke', lightBlack).css('stroke-width', 1);
+                	}
+			scope.updateCountry(data.properties.name);
+		}
                 selectedCountryData = data;
-                //Lighten all other countries
-                g.selectAll(".country").style("fill", '#FFF');
-                //Darken the current country
+                //Make current country's borders yellow
                 var ele = $("#"+data.id);
-                ele.css('fill', shade(data.properties.originalcolor, -0.5))
+		ele.css('stroke', yellow);
+                ele.css('stroke-width', 3);
 
 
                 // Remove existing flow arcs
-                d3.selectAll(".flow_migration_to").remove();
-                d3.selectAll(".flow_migration_from").remove();
-                d3.selectAll(".flow_asylum_to").remove();
-                d3.selectAll(".flow_asylum_from").remove();
+		//d3.selectAll('.flow').style('stroke-opacity',0);
+		var flows = $(".flow");
+		flowLength = flows.length;
+
+		flows.each(function() {
+			$(this).fadeOut(2500, function() { 
+				$(this).remove();
+			})
+		});
                 if (typeof operationType === 'undefined')
-                    operationType = angular.element($("#control-panel")).scope().operation.toLowerCase();
-                $('#vizLoading').modal('show')
+                    operationType = scope.operation.toLowerCase();
+                if(flowLength < 1) $('#vizLoading').modal('show');
 
 
                 // Fetch the data and call plotLines() on callback
@@ -237,7 +265,7 @@ viz = {
 
                         }
                         var scope = angular.element($("#container")).scope();
-                        var year = scope.year.selected.year
+                        var year = scope.year
                         var movingDataYear = _.filter(movingData, function(datum){ return datum.year == year; });
 
                         plotLines(data.properties.name, operationType, movingDataYear);
@@ -270,11 +298,10 @@ viz = {
                     }
                     var source = getCentroid(sourceCountry);
                     var max = Math.log(d3.max(d3.values(aggregateByTargetCountry)));
-                    var scope = angular.element($("#data-panel")).scope();
-                    // if (typeof scope != 'undefined')
+                    var scope = angular.element($("#control-panel")).scope();
                     scope.$apply(function() {
                         scope.resetCountries();
-                    })
+                    });
                     for (var targetCountry in aggregateByTargetCountry) {
 
                         if (aggregateByTargetCountry[targetCountry]==0)
@@ -300,16 +327,16 @@ viz = {
                         strokeValue = 0.5 + 10 * strokeValue;
 
                         //offsets for tooltips
-                        var offsetL = document.getElementById('container').offsetLeft + 20;
-                        var offsetT = document.getElementById('container').offsetTop + 10;
+                        var offsetL = document.getElementById('container').offsetLeft + 40;
+                        var offsetT = document.getElementById('container').offsetTop + 100;
 
                         var mouseOverPath = function(d, i, j) {
                             //Darken the current country
                             var ele = $("#" + nameToFeatureMap[d].id);
-                            ele.css('fill', shade(nameToFeatureMap[d].properties.color, -0.5));
+                            ele.css('stroke', yellow);
 
                             // $(this).addClass("flow-hightlight_"+operationType)
-                            $(this).attr("class", "flow-hightlight_" + operationType)
+                            $(this).attr("class", "flow-hightlight")
 
                             var mouse = d3.mouse(svg.node()).map(function(d) {
                                 return parseInt(d);
@@ -326,23 +353,18 @@ viz = {
                         }
                         var mouseExitPath = function(d, i) {
                             var ele = $("#" + nameToFeatureMap[d].id);
-                            ele.css('fill', shade(nameToFeatureMap[d].properties.color, 0.8));
+                            ele.css('stroke', lightBlack);
                             flow_tooltip.classed("hidden", true);
-                            $(this).attr("class", "flow_" + operationType)
+                            $(this).attr("class", "flow")
                         }
-
-                        g.append("path")
-                            .datum(targetCountry)
-                            .attr("class", "flow_" + operationType)
+                        
+			g.append("path")
+                            .datum(targetCountry) 
+                            .attr("class", "flow")
                             .attr("d", dValue)
-                            .style('stroke-width', strokeValue)
+			    .style('stroke-width', strokeValue)
                             .on("mouseover", mouseOverPath)
-                            .on("mouseout", mouseExitPath)
-                        if (typeof nameToFeatureMap[targetCountry] != 'undefined') {
-                            var ele = $("#" + nameToFeatureMap[targetCountry].id);
-                            // ele.css('fill', "#f00");
-                            ele.css('fill', shade(nameToFeatureMap[targetCountry].properties.color, 0.8));
-                        }
+                            .on("mouseout", mouseExitPath);
                     }
                 }
                 /////////////////////////////////////////////////////////////////////////
@@ -523,8 +545,7 @@ viz = {
                     elem.style.removeProperty('fill');
                 });
                 var aggregateByTargetCountry = reduce(data, 'residence', 'applied_during_year');
-                var scale = d3.scale
-                    .linear()
+                var scale = d3.scale.linear()
                     .domain([0, d3.max(d3.values(aggregateByTargetCountry))])
                     .range([0, 256]);
                 max = Math.log(d3.max(d3.values(aggregateByTargetCountry)));
@@ -547,18 +568,22 @@ viz = {
                 var rawValues = indicatorData.map(function(o){return o[indicatorType]});
                 var max = Math.max.apply(Math, rawValues);
                 var min = Math.min.apply(Math,rawValues);
-                var colorConst = 207;
+		var blackConst = 51;
+                var blueR = 111, blueG = 175, blueB = 194;
                 var r,g,b, newColor;
                 for(var i = 0; i < indicatorData.length; i++) {
                     var obj = indicatorData[i];
                     if(typeof nameToFeatureMap[obj.country] != 'undefined') {
                         var multiplier = Math.pow(((max-min) - (obj[indicatorType]-min))/(max-min), 3);
-                        r = parseInt(colorConst*multiplier);
-                        newColor = 'rgb(' +r+ ',' +r+ ',' +r+')';
+                        r = parseInt(blackConst+((blueR-blackConst)*multiplier));
+                        g = parseInt(blackConst+((blueG-blackConst)*multiplier));
+			//g = parseInt(blackConst*multiplier);
+                        b = parseInt(blackConst+((blueB-blackConst)*multiplier));
+			
+                        newColor = 'rgb(' +r+ ',' +g+ ',' +b+')';
                         nameToFeatureMap[obj.country].properties.color = newColor
                         var element = $('#'+nameToFeatureMap[obj.country].id);
                         element.css('fill', newColor);
-                        // element.css('fill', shade(newColor, 0.8));
                     }
                 }
             }
@@ -567,19 +592,3 @@ viz = {
 
         }
     }
-    //})();
-
-
-// function removeAllFlows() {
-//     d3.selectAll(".flow_migration_to").remove();
-//     d3.selectAll(".flow_migration_from").remove();
-//     d3.selectAll(".flow_asylum_to").remove();
-//     d3.selectAll(".flow_asylum_from").remove();
-
-//     //reset operation variable
-//     var scope = angular.element($("#control-panel")).scope();
-//     scope.$apply(function() {
-//         scope.country.selected = false;
-//         scope.country.name = "";
-//     })
-// }

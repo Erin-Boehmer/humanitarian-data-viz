@@ -5,12 +5,23 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
     .controller('ExploreController', ['$scope',
         function($scope, $http) {
 
+	    $scope.panelToggleClass = "btn glyphicon glyphicon-chevron-up";
             $scope.operation = 'migration_to';
             $scope.action = "People Migrating to ";
-			var migration = viz.init(function() {
+
+	    var migration = viz.init(function() {
                 migration.selectCountry('United States', $scope.operation)
             }, false)
 
+	    $scope.controlPanelToggle = function() {
+		$('#control-panel-body').toggle();
+		if($scope.panelToggleClass == "btn glyphicon glyphicon-chevron-up") {
+			$scope.panelToggleClass = "btn glyphicon glyphicon-chevron-down";
+		} else {
+			$scope.panelToggleClass = "btn glyphicon glyphicon-chevron-up";
+		}
+	    }
+		
             $scope.newValue = function(value) {
                 if ($scope.country.name != "") {
                     migration.onSelectOperation(value);
@@ -54,10 +65,8 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
             }];
 
             $scope.updateCountry = function(countryName) {
-                $scope.$apply(function() {
                     $scope.country.selected = true;
                     $scope.country.name = countryName;
-                });
             }
 
             $scope.indicator = {};
@@ -74,52 +83,36 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
 		        {"column_name":"sanitization", "display":"Sanitization", "description":"Percent of population wtih access to improved sanitation facilities"}
 		    ];
 
-            $scope.explain = {};
-            $scope.explain.migration = "Click the 'In' or 'Out' button and then click a country on the map to show the migrant flow for that area";
-            $scope.explain.asylum = "Click the 'In' or 'Out' button and then click a country on the map to show the # of asylum applicants for that area";
-            $scope.explain.indicator = "Select a world development indicator below to recolor the map on a relative scale for that variable";
+            	$scope.explain = {};
+            	$scope.explain.migration = "Click the 'In' or 'Out' button and then click a country on the map to show the migrant flow for that area";
+            	$scope.explain.asylum = "Click the 'In' or 'Out' button and then click a country on the map to show the # of asylum applicants for that area";
+            	$scope.explain.indicator = "Select a world development indicator below to recolor the map on a relative scale for that variable";
 
-            $scope.year = {};
-		    // $scope.years = [2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013]
-		    $scope.years = [
-		        {"year":"2003", "display":"2003"},
-		        {"year":"2004", "display":"2004"},
-		        {"year":"2005", "display":"2005"},
-		        {"year":"2006", "display":"2006"},
-		        {"year":"2007", "display":"2007"},
-		        {"year":"2008", "display":"2008"},
-		        {"year":"2009", "display":"2009"},
-		        {"year":"2010", "display":"2010"},
-		        {"year":"2011", "display":"2011"},
-		        {"year":"2012", "display":"2012"},
-		        {"year":"2013", "display":"2013"}
-		    ];
-            $scope.year.selected = $scope.years[7];
+            	$scope.year = 2003;
 		    
 		    $scope.yearChanged = function(){
 		    	migration.onSelectOperation();
+			console.log($scope.year);
 		    	$scope.indicatorChanged();
 		    }
 
 		    $scope.indicatorChanged = function(){
-                console.log($scope.year.selected.yea);
-                if ($scope.indicator.selected ) {
-                    $.ajax({
-                        type: "GET",
-                        url: "php/data-fetch.php",
-                        data: {
-                            "operation": "indicator",
-                            "indicator": $scope.indicator.selected.column_name,
-                            "year": $scope.year.selected.year
-                        },
-                        dataType: "json",
-                        success: function(indicatorData) {
-                            // removeAllFlows();
-                            migration.indicatorRecolor(indicatorData,$scope.indicator.selected.column_name);
-                        }
-                    });
-                }
-            };
+                	if ($scope.indicator.selected ) {
+                    		$.ajax({
+                        		type: "GET",
+                        		url: "php/data-fetch.php",
+                        		data: {
+                            			"operation": "indicator",
+                            			"indicator": $scope.indicator.selected.column_name,
+                            			"year": $scope.year
+                        		},
+                        		dataType: "json",
+                        		success: function(indicatorData) {
+                            			migration.indicatorRecolor(indicatorData,$scope.indicator.selected.column_name);
+                        		}
+                    		});
+               	 	}
+            	};
 
 
 
@@ -144,29 +137,15 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
             $scope.selectCountry = function(country) {}
   
 
-			$scope.year = {};
-			// $scope.years = [2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013]
-			$scope.years = [
-			    {"year":"2003", "display":"2003"},
-			    {"year":"2004", "display":"2004"},
-			    {"year":"2005", "display":"2005"},
-			    {"year":"2006", "display":"2006"},
-			    {"year":"2007", "display":"2007"},
-			    {"year":"2008", "display":"2008"},
-			    {"year":"2009", "display":"2009"},
-			    {"year":"2010", "display":"2010"},
-			    {"year":"2011", "display":"2011"},
-			    {"year":"2012", "display":"2012"},
-			    {"year":"2013", "display":"2013"}
-			];
-			$scope.year.selected = $scope.years[7];
-		    $scope.yearChanged = function(){
-		    	migration.onSelectOperation();
-		    	$scope.indicatorChanged();
-		    }
-		}
+                $scope.year = 2003;
 
-    ])
+                    $scope.yearChanged = function(){
+                        migration.onSelectOperation();
+                        console.log($scope.year);
+                        $scope.indicatorChanged();
+                    }
+
+   } ])
 
 .controller('CommonController', ['$scope',
     function($scope) {

@@ -1,22 +1,26 @@
 /* style.css */
+::-ms-tooltip {
+    display: none;
+}
+
 #container {
 	z-index:0;
 }
 
 #container #title {
-	position:relative; 
-	top:-60px; 
+	position:absolute;
+	left:35%;
+	top:-10px; 
 	z-index:10000
 }
 
 #container #control-panel .btn {
-	width: 50px;
+	width: 70px;
 }
 
 #container #control-panel {
 	z-index:10001;
 	position: absolute;
-	cursor: pointer;
 	z-index:1001;
 	top:60px;
 	left: 230px;
@@ -34,8 +38,8 @@
   position: absolute;
   cursor: pointer;
   z-index:100;
-  top:440px;
-  left: 230px;
+  top:60px;
+  right: 10px;
   width: 250px;
   background-color:rgba(255,255,255,0.5);
   height: 220px;
@@ -56,17 +60,19 @@
 }
 
 #indicator-key {
-  background-image: linear-gradient(to right, rgb(207,207,207), black);
+  background-image: linear-gradient(to right, rgb(111,175,194), rgb(51,51,51));
   height: 25px;
   width: 217px;
 }
 
 .country:hover{
-  stroke: #000;
+  cursor: pointer;
+  stroke: #000;		
   stroke-width: 1.5px;
 }
 
 .country {
+  fill: #333;
   stroke:#333;
 }
 
@@ -92,55 +98,13 @@ div.tooltip {
 .flow {
         fill: none;
         stroke-opacity: .20;
-        stroke: #FFCC00;
+        stroke: #FFB524;
 }
 .flow-hightlight {
         fill: none;
-        stroke-opacity: .85;
-        stroke: #CC00FF;
+        stroke-opacity: .95;
+        stroke: #FFB524;
 }
-.flow_migration_from {
-        fill: none;
-        stroke-opacity: .20;
-        stroke: #3c8dbc;
-}
-.flow-hightlight_migration_from {
-        fill: none;
-        stroke-opacity: .85;
-        stroke: #367fa9;
-}
-.flow_migration_to {
-        fill: none;
-        stroke-opacity: .20;
-        stroke: #00a65a;
-}
-.flow-hightlight_migration_to {
-        fill: none;
-        stroke-opacity: .85;
-        stroke: #008d4c;
-}
-.flow_asylum_from {
-        fill: none;
-        stroke-opacity: .20;
-        stroke: #00c0ef;
-}
-.flow-hightlight_asylum_from {
-        fill: none;
-        stroke-opacity: .85;
-        stroke: #00acd6;
-}
-.flow_asylum_to {
-        fill: none;
-        stroke-opacity: .20;
-        stroke: #f39c12;
-}
-.flow-hightlight_asylum_to {
-        fill: none;
-        stroke-opacity: .85;
-        stroke: #e08e0b;
-}
-
-
 #selectors {
 	border: 1px solid red; 
 	float: top; 

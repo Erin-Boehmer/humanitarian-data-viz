@@ -2,19 +2,39 @@
   
 
 
-    <div id="control-panel" class="panel panel-default" draggable>
+    <div id="control-panel" class="panel panel-default">
+    	<div class="panel-body">
+		<h5>Year</h5>
+		<div ng-mouseup="yearChanged()" >
+                <slider
+                        ng-model="year"
+                        floor="2003"
+                        ceiling="2013"
+                        step="1">
+                </slider>
+        	</div> 
+    
+	</div>
+     </div>
+    <!--  Data Panel -->
+  <!--<div id="data-panel" class="panel panel-default" draggable>
     <div class="panel-body">
-
-    <h5 popover='{{explain.indicator}}' popover-trigger="mouseenter">Year</h5>
-      <ui-select ng-model="year.selected" theme="selectize" ng-change="yearChanged()">
-      <ui-select-match placeholder="Select year...">{{year.selected.year}}</ui-select-match>
-      <ui-select-choices repeat="year in years | filter: $select.search">
-              <span ng-bind-html="year.display | highlight: $select.search"></span>
-          </ui-select-choices>
-    </ui-select>
-      
+    <input ng-model="searchText" placeholder="Filter">
+    <div class="data-panel-table">
+      <table id="countrySearchResults">
+        <tr><th>Country</th><th  ng-show="countries[0].count">Applicants</th></tr>
+        <tr ng-repeat="country in countries | filter:searchText" class="dataPanelRow" ng-click='selectCountry(country.name)'>
+          <td>{{country.name}}</td>
+          <td>{{country.count}}</td>
+        </tr>
+      </table>
     </div>
+    </div>-->
   </div>
+</div>
+
+
+
 
 <!-- Modal -->
 <div class="modal  viz_dialog" id="noDataModal" tabindex="-1" role="dialog">
@@ -41,9 +61,9 @@
   </div>
 </div>
 
-  <div id="data-panel" class="panel panel-default">
+<!--  <div id="data-panel" class="panel panel-default">
     <div class="panel-body">
-    <input ng-model="searchText" placeholder="Filter">
+    <input ng-model="searchText" placeholder="Filter"></input>
     <div class="data-panel-table">
       <table id="countrySearchResults">
         <tr><th>Country</th><th  ng-show="countries[0].count">Applicants</th></tr>
@@ -54,4 +74,4 @@
       </table>
     </div>
     </div>
-  </div>
+  </div>-->

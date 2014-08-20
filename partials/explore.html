@@ -1,28 +1,31 @@
 <div id="container">
-	<center><div id="title" ng-show="country.selected"><h2>{{action}}{{country.name}} in {{year.selected.year}}</h2></div></center>
-	<div id="control-panel" class="panel panel-default" draggable>
-		<div class="panel-body">
-		<div style="padding-right: 58px;" class="inline" popover='{{explain.migration}}' popover-trigger="mouseenter" popover-placement="bottom">Migrants</div>
-        		<button type="button"  class="btn btn-primary operation inline" ng-model="operation" btn-radio="'Migration_from'"  ng-change='newValue(oepration)'>Out</button>
-        		<button type="button"  class="btn btn-success operation inline" ng-model="operation" btn-radio="'Migration_to'" ng-change='newValue(oepration)'>In</button>
+<div id="title" ng-show="country.selected"><center><h2>{{action}}{{country.name}} in {{year}}</h2><center></div>
+	<div id="control-panel" class="panel panel-default">
+		<div style="width:100%; cursor: pointer;" ng-class="panelToggleClass" ng-click='controlPanelToggle()'></div>
+		<div id="control-panel-body" class="panel-body">
+		<div popover='{{explain.migration}}' popover-trigger="mouseenter" popover-placement="bottom">Migrants</div>
+        		<button type="button"  class="btn btn-default operation" ng-model="operation" btn-radio="'Migration_from'"  ng-change='newValue(oepration)'>From</button>
+        		<button type="button"  class="btn btn-default operation" ng-model="operation" btn-radio="'Migration_to'" ng-change='newValue(oepration)'>To</button><br><br>
 
-		<br><br>
-		<div style="padding-right: 16px;" class="inline" popover='{{explain.asylum}}' popover-trigger="mouseenter" popover-placement="bottom">Asylum Seekers</div>
-        		<button type="button"  class="btn btn-info operation inline" ng-model="operation" btn-radio="'Asylum_from'" ng-change='newValue(oepration)'>Out</button>
-        		<button type="button"  class="btn btn-warning operation inline" ng-model="operation" btn-radio="'Asylum_to'" ng-change='newValue(oepration)'>In</button>
+		<div popover='{{explain.asylum}}' popover-trigger="mouseenter" popover-placement="bottom">Asylum Seekers</div>
+        		<button type="button"  class="btn btn-default operation" ng-model="operation" btn-radio="'Asylum_from'" ng-change='newValue(oepration)'>From</button>
+        		<button type="button"  class="btn btn-default operation" ng-model="operation" btn-radio="'Asylum_to'" ng-change='newValue(oepration)'>To</button>
 		
 		<br><hr>
-		<h5 popover='{{explain.indicator}}' popover-trigger="mouseenter">Year</h5>
-	  	<ui-select ng-model="year.selected" theme="selectize" ng-change="yearChanged()">
-	 		<ui-select-match placeholder="Select year...">{{year.selected.year}}</ui-select-match>
- 			<ui-select-choices repeat="year in years | filter: $select.search">
-      				<span ng-bind-html="year.display | highlight: $select.search"></span>
-    			</ui-select-choices>
- 		</ui-select>
-			
-		<br><hr>
-		<h5>Indicators</h5>
-	  	<ui-select ng-model="indicator.selected" theme="selectize" ng-change="indicatorChanged()">>
+		
+		<h5>Year</h5>
+		<div ng-mouseup="yearChanged()" >
+		<slider
+    			ng-model="year"
+    			floor="2003"
+    			ceiling="2013"
+    			step="1">
+		</slider>
+		</div>
+
+		<hr>
+		<h5 popover='{{explain.indicator}}' popover-trigger="mouseenter">Indicators</h5>
+	  	<ui-select ng-model="indicator.selected" theme="selectize" ng-change="indicatorChanged()">
 	 		<ui-select-match placeholder="Select an indicator...">{{$select.selected.display}}</ui-select-match>
  			<ui-select-choices repeat="indicator in indicators | filter: $select.search">
       				<span popover='{{indicator.description}}' popover-placement="right" popover-trigger="mouseenter" ng-bind-html="indicator.display | highlight: $select.search"></span>
@@ -31,7 +34,7 @@
 			
 		<div id="indicator-key" ng-show="indicator.selected">
 			<div style="float: right; color: white; margin-right: 5px; line-height: 25px;">Higher</div>
-			<div style="float: left; margin-left: 5px; line-height: 25px;;">Lower</div>
+			<div style="float: left; color:white; margin-left: 5px; line-height: 25px;">Lower</div>
 			<div id="gradient"></div>
 		</div>
 		</div>
