@@ -12,6 +12,9 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
 	    var migration = viz.init(function() {
                 migration.selectCountry('United States', $scope.operation)
             }, false)
+		
+	    $('#data-panel').draggable();
+	    $('#control-panel').draggable();
 
 	    $scope.controlPanelToggle = function() {
 		$('#control-panel-body').toggle();
@@ -129,6 +132,8 @@ angular.module('myApp.controllers', ['ui.bootstrap'])
         function($scope) {
          
 	$scope.panelToggleClass = "btn glyphicon glyphicon-chevron-up";
+	$('#data-panel').draggable();
+	$('#control-panel').draggable();
 
 	$scope.operation = 'asylum_from';
          var migration = viz.init(function() {
