@@ -18,8 +18,6 @@ config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/syria', {templateUrl: 'partials/syria.html', controller: 'CommonController'});
   $routeProvider.when('/explore', {templateUrl: 'partials/explore.html', controller: 'ExploreController'});
   $routeProvider.when('/datasources', {templateUrl: 'partials/datasources.html', controller: 'CommonController'});
-  $routeProvider.when('/erin', {templateUrl: 'partials/erin.html', controller: 'CommonController'});
-  $routeProvider.when('/kunal', {templateUrl: 'partials/kunal.html', controller: 'CommonController'});
-  $routeProvider.when('/nikhil', {templateUrl: 'partials/nikhil.html', controller: 'CommonController'});
+  $routeProvider.when('/aboutus', {templateUrl: 'partials/aboutus.html', controller: 'CommonController'});
   $routeProvider.otherwise({redirectTo: '/introduction'});
 }]);
